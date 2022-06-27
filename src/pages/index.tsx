@@ -6,8 +6,9 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { PrimaryFeatures } from "@/components/PrimaryFeatures";
-import { SecondaryFeatures } from "@/components/SecondaryFeatures";
 import { Testimonials } from "@/components/Testimonials";
+import { Contact } from "@/components/Contact";
+
 interface Props {}
 
 const Home: React.FC<Props> = () => {
@@ -24,10 +25,10 @@ const Home: React.FC<Props> = () => {
       <main>
         <Hero />
         <PrimaryFeatures />
-        <SecondaryFeatures />
-        <CallToAction />
         <Testimonials />
+        <CallToAction />
         <Faqs />
+        <Contact />
       </main>
       <Footer />
     </>

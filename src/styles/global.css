@@ -3,6 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply text-gray-100 bg-gray-800;
+#__next {
+  min-height: 100vh;
 }

@@ -10,11 +10,13 @@
     "ts-node": "ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\""
   },
   "dependencies": {
+    "@headlessui/react": "^1.6.5",
     "@prisma/client": "^3.15.2",
     "@trpc/client": "^9.15.0",
     "@trpc/next": "^9.15.0",
     "@trpc/react": "^9.15.0",
     "@trpc/server": "^9.15.0",
+    "clsx": "^1.1.1",
     "next": "12.0.4",
     "next-plausible": "^3.1.4",
     "pokenode-ts": "^1.9.1",

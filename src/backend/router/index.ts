@@ -1,13 +1,12 @@
 import * as trpc from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@/backend/utils/prisma";
-import { getOptionsForVote } from "@/utils/getRandomPokemon";
 
 export const appRouter = trpc
   .router()
   .query("get-pokemon-pair", {
     async resolve() {
-      const [first, second] = getOptionsForVote();
+      const [first, second] = [1, 2];
 
       const bothPokemon = await prisma.pokemon.findMany({
         where: { id: { in: [first, second] } },

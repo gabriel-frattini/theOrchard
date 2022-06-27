@@ -5,18 +5,10 @@ CREATE TABLE `Booking` (
     `name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `role` ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
-    `startDate` DATETIME(3) NULL,
-    `endDate` DATETIME(3) NULL,
+    `startDate` VARCHAR(191) NULL,
+    `endDate` VARCHAR(191) NULL,
     `room` VARCHAR(191) NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Conversation` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `senderId` INTEGER NOT NULL,
+    `message` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

@@ -19,19 +19,12 @@ model Booking {
   name          String
   email         String
   role          Role           @default(USER)
-  startDate     DateTime?
-  endDate       DateTime?
+  startDate     String?
+  endDate       String?
   room          String?
-  conversations Conversation[]
-}
-
-model Conversation {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  sender   Booking  @relation(fields: [senderId], references: [id])
-  senderId  Int
   message String
 }
+
 
 enum Role {
   USER

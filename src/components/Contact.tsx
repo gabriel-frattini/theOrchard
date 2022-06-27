@@ -1,6 +1,33 @@
 import { MailIcon, PhoneIcon } from "@heroicons/react/outline";
+import { trpc } from "@/utils/trpc";
 
 export function Contact() {
+  const bookingMutation = trpc.useMutation(["create-booking"]);
+
+
+  const useContactForm = async (e: any) => {
+    e.preventDefault();
+
+    const name: HTMLInputElement = e.target.elements.name;
+    const email: HTMLInputElement = e.target.elements.email;
+    const startDate: HTMLInputElement = e.target.elements.startDate;
+    const endDate: HTMLInputElement = e.target.elements.endDate;
+    const room: HTMLInputElement = e.target.elements.room;
+    const message: HTMLInputElement = e.target.elements.message;
+
+    const input = {
+      name: name.value,
+      email: email.value,
+      startDate: startDate.value,
+      endDate: endDate.value,
+      room: room.value,
+      message: message.value,
+    };
+    bookingMutation.mutate({ ...input });
+
+    if(bookingMutation.error)console.error(bookingMutation.error)
+  };
+
   return (
     <div className="relative mx-auto lg:grid lg:grid-cols-5">
       <div className="bg-gray-50 py-16 px-4 sm:px-6 lg:col-span-2 lg:px-8 lg:py-24 xl:pr-12">
@@ -45,15 +72,15 @@ export function Contact() {
       </div>
       <div className="bg-white py-16 px-4 sm:px-6 lg:col-span-3 lg:py-24 lg:px-8 xl:pl-12">
         <div className="max-w-lg mx-auto lg:max-w-none">
-          <form action="#" method="POST" className="grid grid-cols-1 gap-y-6">
+          <form onSubmit={useContactForm} className="grid grid-cols-1 gap-y-6">
             <div>
-              <label htmlFor="full-name" className="sr-only">
-                Full name
+              <label htmlFor="name" className="sr-only">
+                name
               </label>
               <input
                 type="text"
-                name="full-name"
-                id="full-name"
+                name="name"
+                id="name"
                 autoComplete="name"
                 className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
                 placeholder="Full name"
@@ -61,7 +88,7 @@ export function Contact() {
             </div>
             <div>
               <label htmlFor="email" className="sr-only">
-                Email
+                email
               </label>
               <input
                 id="email"
@@ -73,17 +100,41 @@ export function Contact() {
               />
             </div>
             <div>
-              <label htmlFor="phone" className="sr-only">
-                Phone
+              <label htmlFor="date" className="sr-only">
+                Start date
               </label>
               <input
-                type="text"
-                name="phone"
-                id="phone"
-                autoComplete="tel"
+                type="date"
+                name="startDate"
+                id="startDate"
                 className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
-                placeholder="Phone"
               />
+            </div>
+            <div>
+              <label htmlFor="date" className="sr-only">
+                Start date
+              </label>
+              <input
+                type="date"
+                name="endDate"
+                id="endDate"
+                className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+              />
+            </div>
+            <div>
+              <label htmlFor="room" className="sr-only">
+                Room
+              </label>
+              <select
+                name="room"
+                id="room"
+                className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+              >
+                <option value="deluxe room">Deluxe Room</option>
+                <option value="king room">King Room</option>
+                <option value="queen room">Queen Room</option>
+                <option value="twin room">Twin Room</option>
+              </select>
             </div>
             <div>
               <label htmlFor="message" className="sr-only">
@@ -100,6 +151,7 @@ export function Contact() {
             </div>
             <div>
               <button
+                disabled={bookingMutation.isLoading}
                 type="submit"
                 className="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >

@@ -6,7 +6,7 @@ import { AuthLayout } from "@/components/AuthLayout";
 import { Input } from "@/components/Input";
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
-import cookieCutter from "cookie-cutter";
+import { setCookies } from "cookies-next";
 
 interface Props {}
 
@@ -28,7 +28,7 @@ const Admin: React.FC<Props> = () => {
     refetch();
     if (data)
       if (data.admin && !data.hasToken) {
-        cookieCutter.set("admin-token", process.env.NEXT_PUBLIC_ADMIN_TOKEN);
+        setCookies("admin-token", process.env.NEXT_PUBLIC_ADMIN_TOKEN);
         router.push("/admin-dashboard");
       }
   };

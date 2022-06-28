@@ -27,8 +27,9 @@ const Admin: React.FC<Props> = () => {
   const handleLogin = async () => {
     refetch();
     if (data)
-      if (data.admin && !data.hasToken) {
-        setCookies("admin-token", process.env.NEXT_PUBLIC_ADMIN_TOKEN);
+      if (data.admin) {
+        if (!data.hasToken)
+          setCookies("admin-token", process.env.NEXT_PUBLIC_ADMIN_TOKEN);
         router.push("/admin-dashboard");
       }
   };

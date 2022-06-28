@@ -19,7 +19,6 @@
     "@trpc/react": "^9.15.0",
     "@trpc/server": "^9.15.0",
     "clsx": "^1.1.1",
-    "cookie-cutter": "^0.2.0",
     "cookies-next": "^2.0.5",
     "dotenv": "^16.0.1",
     "nanoid": "^4.0.0",

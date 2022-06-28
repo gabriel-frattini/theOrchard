@@ -3,8 +3,9 @@ import "../styles/global.css";
 import type { AppProps } from "next/app";
 import PlausibleProvider from "next-plausible";
 import Head from "next/head";
+import { AppType } from "next/dist/shared/lib/utils";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp: AppType = ({ Component, pageProps }) => {
   const description =
     "We're here to answer the eternal question: What Pokémon is roundest?";
   const title = "Roundest Pokémon - Public Poll";
@@ -54,7 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
     </PlausibleProvider>
   );
-}
+};
 
 import { withTRPC } from "@trpc/next";
 import type { AppRouter } from "@/backend/router";
@@ -75,6 +76,11 @@ export default withTRPC<AppRouter>({
     const url = `${getBaseUrl()}/api/trpc`;
 
     return {
+      headers() {
+        return {
+          cookie: ctx?.req?.headers.cookie,
+        };
+      },
       url,
       /**
        * @link https://react-query.tanstack.com/reference/QueryClient
@@ -85,5 +91,5 @@ export default withTRPC<AppRouter>({
   /**
    * @link https://trpc.io/docs/ssr
    */
-  ssr: false,
+  ssr: true,
 })(MyApp);

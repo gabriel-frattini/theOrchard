@@ -4,7 +4,6 @@ import { trpc } from "@/utils/trpc";
 export function Contact() {
   const bookingMutation = trpc.useMutation(["create-booking"]);
 
-
   const useContactForm = async (e: any) => {
     e.preventDefault();
 
@@ -25,7 +24,7 @@ export function Contact() {
     };
     bookingMutation.mutate({ ...input });
 
-    if(bookingMutation.error)console.error(bookingMutation.error)
+    if (bookingMutation.error) console.error(bookingMutation.error);
   };
 
   return (
@@ -149,7 +148,7 @@ export function Contact() {
                 defaultValue={""}
               />
             </div>
-            <div>
+            <div className="flex gap-6 ">
               <button
                 disabled={bookingMutation.isLoading}
                 type="submit"
@@ -157,6 +156,29 @@ export function Contact() {
               >
                 Submit
               </button>
+              {!bookingMutation.isLoading && bookingMutation.data && (
+                <div className="flex-col">
+                  <p className="text-lg leading-6 font-medium text-gray-500">
+                    thanks for reaching out! We’re thrilled to hear from you and
+                    will get back in touch with you soon!
+                  </p>
+                  <p className="text-lg leading-6 font-medium text-gray-500">
+                    {" "}
+                    Have a great day!
+                  </p>
+                </div>
+              )}
+              {!bookingMutation.isLoading && bookingMutation.isError && (
+                <div className="flex-col">
+                  <p className="text-lg leading-6 font-medium text-gray-500">
+                    Your message could not be sent
+                  </p>
+                  <p className="text-lg leading-6 font-medium text-gray-500">
+                    {" "}
+                    Have a great day!
+                  </p>
+                </div>
+              )}
             </div>
           </form>
         </div>

@@ -25,6 +25,10 @@ model Booking {
   message String
 }
 
+model User {
+  id Int @id @default(autoincrement())
+  passphrase String
+}
 
 enum Role {
   USER

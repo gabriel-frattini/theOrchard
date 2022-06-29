@@ -28,8 +28,8 @@ export function Contact() {
   };
 
   return (
-    <div className="relative mx-auto lg:grid lg:grid-cols-5">
-      <div className="bg-gray-50 py-16 px-4 sm:px-6 lg:col-span-2 lg:px-8 lg:py-24 xl:pr-12">
+    <div className="relative bg-gray-50 mx-auto lg:grid lg:grid-cols-5">
+      <div className="py-16 px-4 sm:px-6 lg:col-start 2 lg:col-end-3 lg:px-8 lg:py-24 xl:pr-12">
         <div className="max-w-lg mx-auto">
           <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
             Get in touch
@@ -69,10 +69,10 @@ export function Contact() {
           </dl>
         </div>
       </div>
-      <div className="bg-white py-16 px-4 sm:px-6 lg:col-span-3 lg:py-24 lg:px-8 xl:pl-12">
+      <div className="bg-white py-16 px-4 sm:px-6 lg:col-start-3 lg:col-end-5  lg:py-24 lg:px-8 xl:pl-12">
         <div className="max-w-lg mx-auto lg:max-w-none">
           <form onSubmit={useContactForm} className="grid grid-cols-1 gap-y-6">
-            <div>
+            <div className="w-96">
               <label htmlFor="name" className="sr-only">
                 name
               </label>
@@ -85,7 +85,7 @@ export function Contact() {
                 placeholder="Full name"
               />
             </div>
-            <div>
+            <div className="w-96">
               <label htmlFor="email" className="sr-only">
                 email
               </label>
@@ -98,7 +98,7 @@ export function Contact() {
                 placeholder="Email"
               />
             </div>
-            <div>
+            <div className="w-96">
               <label htmlFor="date" className="sr-only">
                 Start date
               </label>
@@ -106,10 +106,10 @@ export function Contact() {
                 type="date"
                 name="startDate"
                 id="startDate"
-                className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+                className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md hover:cursor-pointer"
               />
             </div>
-            <div>
+            <div className="w-96 ">
               <label htmlFor="date" className="sr-only">
                 Start date
               </label>
@@ -117,17 +117,17 @@ export function Contact() {
                 type="date"
                 name="endDate"
                 id="endDate"
-                className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+                className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md hover:cursor-pointer"
               />
             </div>
-            <div>
+            <div className="w-96">
               <label htmlFor="room" className="sr-only">
                 Room
               </label>
               <select
                 name="room"
                 id="room"
-                className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+                className="block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md hover:cursor-pointer"
               >
                 <option value="deluxe room">Deluxe Room</option>
                 <option value="king room">King Room</option>
@@ -135,7 +135,7 @@ export function Contact() {
                 <option value="twin room">Twin Room</option>
               </select>
             </div>
-            <div>
+            <div className="max-w-3xl">
               <label htmlFor="message" className="sr-only">
                 Message
               </label>

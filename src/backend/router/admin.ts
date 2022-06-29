@@ -23,8 +23,8 @@ export const AdminRouter = createRouter()
 
   .query("get-messages", {
     async resolve({ ctx }) {
-      // if (ctx.token === process.env.NEXT_PUBLIC_ADMIN_TOKEN) {
+      if (ctx.token === process.env.NEXT_PUBLIC_ADMIN_TOKEN) {
       return await prisma.booking.findMany();
-      // }
+      }
     },
   });

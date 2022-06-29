@@ -4,6 +4,7 @@ import { MenuAlt2Icon, XIcon } from "@heroicons/react/outline";
 import { createBookingInput } from "@/backend/schema/booking.schema";
 import { getBookingQuery } from "@/backend/schema/admin.schema";
 import { trpc } from "@/utils/trpc";
+import Link from "next/link";
 
 interface SingleBookingProps {
   data: createBookingInput;
@@ -29,27 +30,27 @@ const SingleBooking = ({ data }: any) => {
             <div className="flex space-x-3">
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium">{data.email}</h3>
-                  <p className="text-sm text-gray-500">
+                  <h3 className="text-lg font-medium  mt-4 ">{data.email}</h3>
+                  <p className="text-lg text-gray-500">
                     Sent {data.createdAt.toString().split("T")[0]}
                   </p>
                 </div>
-                <p className="text-md text-gray-600">
+                <p className="text-lg text-gray-600 mt-4">
                   {data.startDate} to {data.endDate}
                 </p>
-                <p className="text-md text-gray-600">{data.room}</p>
+                <p className="text-lg text-gray-600">{data.room}</p>
               </div>
             </div>
           }
 
           <label
             htmlFor="comment"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-md font-medium text-gray-700 my-4"
           >
             Message
           </label>
-          <div className="shadow-sm block w-full h-48 p-4 sm:text-sm border-gray-300 rounded-md">
-            {data.message}
+          <div className="shadow-sm block w-full h-48 p-4 sm:text-sm border-gray-200 border-2 rounded-md">
+            <p className="text-lg">{data.message}</p>
           </div>
         </div>
       </div>
@@ -119,7 +120,7 @@ export default function Admin() {
                         </button>
                       </div>
                     </Transition.Child>
-                    <div className="flex-shrink-0 flex items-center px-4">
+                    <div className="  px-4">
                       <nav
                         className="h-full overflow-y-auto"
                         aria-label="Directory"
@@ -136,10 +137,10 @@ export default function Admin() {
                                     className="absolute inset-0"
                                     aria-hidden="true"
                                   />
-                                  <p className="text-sm font-medium text-gray-900">
+                                  <p className="text-lg font-medium text-gray-900">
                                     {person.name}
                                   </p>
-                                  <p className="text-sm text-gray-500 truncate">
+                                  <p className="text-md text-gray-500 truncate">
                                     {person.message.length > 60
                                       ? `${person.message.slice(0, 60)}...`
                                       : person.message}
@@ -185,10 +186,17 @@ export default function Admin() {
                             className="absolute inset-0"
                             aria-hidden="true"
                           />
-                          <p className="text-sm font-medium text-gray-900">
-                            {person.name}
-                          </p>
-                          <p className="text-sm text-gray-500">
+
+                          <span className="flex justify-between">
+                            <p className="text-lg font-medium text-gray-900">
+                              {person.name}
+                            </p>
+
+                            <p className="text-gray-700 text-md">
+                              {person.createdAt.toString().split("T")[0]}
+                            </p>
+                          </span>
+                          <p className="text-md text-gray-500">
                             {person.message.length > 60
                               ? `${person.message.slice(0, 60)}...`
                               : person.message}
@@ -212,7 +220,11 @@ export default function Admin() {
                 <span className="sr-only">Open sidebar</span>
                 <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
               </button>
-              <div className="flex-1 px-4 flex justify-between"></div>
+              <div className="flex-1 p-8 flex justify-end cursor-pointer">
+                <Link href="/">
+                  <h1 className="font-medium text-xl">The Orchard</h1>
+                </Link>
+              </div>
             </div>
             <SingleBooking data={activeBooking} />
           </div>

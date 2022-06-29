@@ -1,74 +1,45 @@
-import Image from 'next/image'
+import Image from "next/image";
 
-import { Container } from '@/components/Container'
-import avatarImage1 from '@/images/avatars/avatar-1.png'
-import avatarImage2 from '@/images/avatars/avatar-2.png'
-import avatarImage3 from '@/images/avatars/avatar-3.png'
-import avatarImage4 from '@/images/avatars/avatar-4.png'
-import avatarImage5 from '@/images/avatars/avatar-5.png'
+import { Container } from "@/components/Container";
+import avatarImage1 from "@/images/avatars/avatar-1.png";
+import avatarImage2 from "@/images/avatars/avatar-2.png";
+import avatarImage3 from "@/images/avatars/avatar-3.png";
+import avatarImage4 from "@/images/avatars/avatar-4.png";
+import avatarImage5 from "@/images/avatars/avatar-5.png";
 
 const testimonials = [
   [
     {
       content:
-        'TaxPal is so easy to use I can’t help but wonder if it’s really doing the things the government expects me to do.',
+        "The hotel has a wonderful garden und our room had a very nice view to the sea. The hotel is well lead by a very friendly person who explained us all about the plants in the garden and places around the island. Breakfast was very good and included fresh fruits from the garden. We can definitely recommend this hotel for a stay at Mahe. You will need a car, though, to get to the most beautiful beaches of Mahe.",
       author: {
-        name: 'Sheryl Berge',
-        role: 'CEO at Lynch LLC',
-        image: avatarImage1,
+        name: "Marc",
+        role: "2022-06-26",
+        rating: "9,0",
       },
     },
     {
       content:
-        'I’m trying to get a hold of someone in support, I’m in a lot of trouble right now and they are saying it has something to do with my books. Please get back to me right away.',
+        "Everything was perfect. Location, cleanliness, the breakfast was outstanding and on top of it, our host is amazing: always kind, always ready to help, always spoiling us with delicious fruits from her beautiful garden, delicious dinner and most important, with positive attitude and good advice.",
       author: {
-        name: 'Amy Hahn',
-        role: 'Director at Velocity Industries',
-        image: avatarImage4,
+        name: "Teodora",
+        role: "2022-05-31",
+        rating: "10",
       },
     },
   ],
   [
     {
       content:
-        'The best part about TaxPal is every time I pay my employees, my bank balance doesn’t go down like it used to. Looking forward to spending this extra cash when I figure out why my card is being declined.',
+        "Breakfast was incredible, the host was extremely friendly, the property and the grounds were gorgeous. We even had a large dinner mostly provided by the host. A stunning home and fantastic host!",
       author: {
-        name: 'Leland Kiehn',
-        role: 'Founder of Kiehn and Sons',
-        image: avatarImage5,
-      },
-    },
-    {
-      content:
-        'There are so many things I had to do with my old software that I just don’t do at all with TaxPal. Suspicious but I can’t say I don’t love it.',
-      author: {
-        name: 'Erin Powlowski',
-        role: 'COO at Armstrong Inc',
-        image: avatarImage2,
+        name: "William",
+        role: "2022-03-21",
+        rating: "10",
       },
     },
   ],
-  [
-    {
-      content:
-        'I used to have to remit tax to the EU and with TaxPal I somehow don’t have to do that anymore. Nervous to travel there now though.',
-      author: {
-        name: 'Peter Renolds',
-        role: 'Founder of West Inc',
-        image: avatarImage3,
-      },
-    },
-    {
-      content:
-        'This is the fourth email I’ve sent to your support team. I am literally being held in jail for tax fraud. Please answer your damn emails, this is important.',
-      author: {
-        name: 'Amy Hahn',
-        role: 'Director at Velocity Industries',
-        image: avatarImage4,
-      },
-    },
-  ],
-]
+];
 
 export function Testimonials() {
   return (
@@ -85,7 +56,6 @@ export function Testimonials() {
           >
             See what the guests enjoyed the most
           </h2>
-  
         </div>
         <ul className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:max-w-none lg:grid-cols-3">
           {testimonials.map((column, columnIndex) => (
@@ -116,8 +86,8 @@ export function Testimonials() {
                             {testimonial.author.role}
                           </div>
                         </div>
-                        <div className="h-14 w-14 overflow-hidden rounded-full bg-slate-50">
-                          <Image src={testimonial.author.image} alt="" />
+                        <div className="h-14 w-14 text-2xl flex justify-center items-center  overflow-hidden rounded-full bg-slate-50">
+                          <span>{testimonial.author.rating}</span>
                         </div>
                       </figcaption>
                     </figure>
@@ -129,5 +99,5 @@ export function Testimonials() {
         </ul>
       </Container>
     </section>
-  )
+  );
 }

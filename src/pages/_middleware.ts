@@ -9,4 +9,10 @@ export function middleware(req: NextRequest) {
 
     NextResponse.redirect("/admin-dashboard");
   }
-}
+
+    if (req.nextUrl.pathname === "/admin-login") {
+      if (req.cookies["admin-token"] === process.env.NEXT_PUBLIC_ADMIN_TOKEN)
+        return NextResponse.redirect("/admin-dashboard");
+    }
+    return;
+ }

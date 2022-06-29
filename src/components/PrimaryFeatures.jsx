@@ -136,17 +136,22 @@ export function PrimaryFeatures() {
                         {feature.description}
                       </p>
                     </div>
-                    <Link href={`rooms/${idx}`}>
-                      <div className="relative mt-10 aspect-[1085/730] w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:max-w-[57.8125rem]  hover:cursor-pointer">
-                        <Image
-                          src={feature.image}
-                          alt=""
-                          layout="fill"
-                          objectFit="contain"
-                          priority
-                        />
-                      </div>
-                    </Link>
+                      <Link href={`rooms/${idx}`}>
+                        <p className="flex  font-medium text-lg max-w-fit hover:border-black border-b-gray-50 cursor-pointer border-b-2">
+                          View Room
+                        </p>
+                      </Link>
+                      <Link href={`rooms/${idx}`}>
+                        <div className="relative mt-10 aspect-[1085/730] w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:max-w-[57.8125rem]  hover:cursor-pointer">
+                          <Image
+                            src={feature.image}
+                            alt=""
+                            layout="fill"
+                            objectFit="contain"
+                            priority
+                          />
+                        </div>
+                      </Link>
                   </Tab.Panel>
                 ))}
               </Tab.Panels>

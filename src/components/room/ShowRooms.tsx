@@ -38,13 +38,52 @@ const features = [
   },
 ];
 
-export function PrimaryFeatures() {
+export const RoomImages = () => {
+  return (
+    <>
+      <Tab.Panels className="lg:col-span-7">
+        {features.map((feature, idx) => (
+          <Tab.Panel key={feature.title} unmount={false}>
+            <div className="relative sm:px-6 lg:hidden">
+              <div className="absolute -inset-x-4 -top-[6.5rem] -bottom-[4.25rem] bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl" />
+              <p className="relative mx-auto max-w-2xl text-base text-white sm:text-center">
+                {feature.description}
+              </p>
+            </div>
+            <Link href={`rooms/${idx}`}>
+              <p className="flex  font-medium text-lg max-w-fit hover:border-black border-b-gray-50 cursor-pointer border-b-2">
+                View Room
+              </p>
+            </Link>
+            <Link href={`rooms/${idx}`}>
+              <div className="relative mt-10 aspect-[1085/730] w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:max-w-[57.8125rem]  hover:cursor-pointer">
+                <Image
+                  src={feature.image}
+                  alt=""
+                  layout="fill"
+                  objectFit="contain"
+                  priority
+                />
+              </div>
+            </Link>
+          </Tab.Panel>
+        ))}
+      </Tab.Panels>
+    </>
+  );
+};
+
+interface ParentCompProps {
+  childComp?: React.ReactNode;
+}
+
+export const ShowRooms: React.FC<ParentCompProps> = (props) => {
   let [tabOrientation, setTabOrientation] = useState("horizontal");
 
   useEffect(() => {
     let lgMediaQuery = window.matchMedia("(min-width: 1024px)");
 
-    function onMediaQueryChange({ matches }) {
+    function onMediaQueryChange({ matches }: any) {
       setTabOrientation(matches ? "vertical" : "horizontal");
     }
 
@@ -127,38 +166,11 @@ export function PrimaryFeatures() {
                   ))}
                 </Tab.List>
               </div>
-              <Tab.Panels className="lg:col-span-7">
-                {features.map((feature, idx) => (
-                  <Tab.Panel key={feature.title} unmount={false}>
-                    <div className="relative sm:px-6 lg:hidden">
-                      <div className="absolute -inset-x-4 -top-[6.5rem] -bottom-[4.25rem] bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl" />
-                      <p className="relative mx-auto max-w-2xl text-base text-white sm:text-center">
-                        {feature.description}
-                      </p>
-                    </div>
-                      <Link href={`rooms/${idx}`}>
-                        <p className="flex  font-medium text-lg max-w-fit hover:border-black border-b-gray-50 cursor-pointer border-b-2">
-                          View Room
-                        </p>
-                      </Link>
-                      <Link href={`rooms/${idx}`}>
-                        <div className="relative mt-10 aspect-[1085/730] w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:max-w-[57.8125rem]  hover:cursor-pointer">
-                          <Image
-                            src={feature.image}
-                            alt=""
-                            layout="fill"
-                            objectFit="contain"
-                            priority
-                          />
-                        </div>
-                      </Link>
-                  </Tab.Panel>
-                ))}
-              </Tab.Panels>
+              {props.childComp}
             </>
           )}
         </Tab.Group>
       </Container>
     </section>
   );
-}
+};

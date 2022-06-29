@@ -18,7 +18,7 @@ const Admin: React.FC<Props> = () => {
       if (data.admin) {
         if (!data.hasToken) {
           setCookies("admin-token", process.env.NEXT_PUBLIC_ADMIN_TOKEN);
-          router.push("/admin-dashboard");
+          router.push("/admin/dashboard");
         }
       }
       return;

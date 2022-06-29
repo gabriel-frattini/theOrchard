@@ -13,25 +13,20 @@ interface Props {}
 const Admin: React.FC<Props> = () => {
   const router = useRouter();
   const [passphrase, setPassphrase] = React.useState("");
-
-  const { data, refetch, isLoading, error } = trpc.useQuery(
-    ["admin.login", { passphrase: passphrase }],
-    {
-      refetchInterval: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      refetchIntervalInBackground: false,
-    }
-  );
-
-  const handleLogin = async () => {
-    refetch();
-    if (data)
+  const { mutate, isLoading, data } = trpc.useMutation(["admin.login"], {
+    onSuccess: (data) => {
       if (data.admin) {
-        if (!data.hasToken)
+        if (!data.hasToken) {
           setCookies("admin-token", process.env.NEXT_PUBLIC_ADMIN_TOKEN);
-        router.push("/admin-dashboard");
+          router.push("/admin-dashboard");
+        }
       }
+      return;
+    },
+  });
+
+  const handleLogin = () => {
+    mutate({ passphrase: passphrase });
   };
 
   return (

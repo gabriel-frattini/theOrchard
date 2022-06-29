@@ -3,7 +3,7 @@ import { prisma } from "../utils/prisma";
 import { z } from "zod";
 
 export const AdminRouter = createRouter()
-  .query("login", {
+  .mutation("login", {
     input: z.object({
       passphrase: z.string(),
     }),
@@ -15,7 +15,7 @@ export const AdminRouter = createRouter()
         where: { passphrase: input.passphrase },
       });
       if (!admin) {
-        return;
+        return { admin: false };
       }
       return { admin: true, hasToken: false };
     },
@@ -24,7 +24,7 @@ export const AdminRouter = createRouter()
   .query("get-messages", {
     async resolve({ ctx }) {
       if (ctx.token === process.env.NEXT_PUBLIC_ADMIN_TOKEN) {
-      return await prisma.booking.findMany();
+        return await prisma.booking.findMany();
       }
     },
   });

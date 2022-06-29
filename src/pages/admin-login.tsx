@@ -15,7 +15,7 @@ const Admin: React.FC<Props> = () => {
   const [passphrase, setPassphrase] = React.useState("");
 
   const { data, refetch, isLoading, error } = trpc.useQuery(
-    ["login", { passphrase: passphrase }],
+    ["admin.login", { passphrase: passphrase }],
     {
       refetchInterval: false,
       refetchOnReconnect: false,

@@ -1,17 +1,8 @@
 import { Fragment, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
-import {
-  BellIcon,
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
-  HomeIcon,
-  InboxIcon,
-  MenuAlt2Icon,
-  UsersIcon,
-  XIcon,
-} from "@heroicons/react/outline";
-import { SearchIcon } from "@heroicons/react/solid";
+import { MenuAlt2Icon, XIcon } from "@heroicons/react/outline";
+
+import { trpc } from "@/utils/trpc";
 
 const people = [
   {
@@ -242,8 +233,13 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function Admin() {
+  const { data: _data, isLoading, error } = trpc.useQuery(["get-messages"]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  if (isLoading) return <></>;
+
+  const data = _data[0];
 
   return (
     <>
@@ -305,46 +301,31 @@ export default function Example() {
                       className="h-full overflow-y-auto"
                       aria-label="Directory"
                     >
-                      {Object.keys(directory).map((letter) => (
-                        <div key={letter} className="relative">
-                          <div className="z-10 sticky top-0 border-t border-b border-gray-200 bg-gray-50 px-6 py-1 text-sm font-medium text-gray-500">
-                            <h3>{letter}</h3>
-                          </div>
-                          <ul
-                            role="list"
-                            className="relative z-0 divide-y divide-gray-200"
-                          >
-                            {directory[letter].map((person) => (
-                              <li key={person.id} className="bg-white">
-                                <div className="relative px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                                  <div className="flex-shrink-0">
-                                    <img
-                                      className="h-10 w-10 rounded-full"
-                                      src={person.imageUrl}
-                                      alt=""
-                                    />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <a href="#" className="focus:outline-none">
-                                      {/* Extend touch target to entire panel */}
-                                      <span
-                                        className="absolute inset-0"
-                                        aria-hidden="true"
-                                      />
-                                      <p className="text-sm font-medium text-gray-900">
-                                        {person.name}
-                                      </p>
-                                      <p className="text-sm text-gray-500 truncate">
-                                        {person.role}
-                                      </p>
-                                    </a>
-                                  </div>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
+                      <ul
+                        role="list"
+                        className="relative z-0 divide-y divide-gray-200"
+                      >
+                        {_data?.map((person) => (
+                          <li key={person.id} className="bg-white">
+                            <div className="relative px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                              <div className="flex-1 min-w-0">
+                                <span
+                                  className="absolute inset-0"
+                                  aria-hidden="true"
+                                />
+                                <p className="text-sm font-medium text-gray-900">
+                                  {person.name}
+                                </p>
+                                <p className="text-sm text-gray-500 truncate">
+                                  {person.message.length > 60
+                                    ? `${person.message.slice(0, 60)}...`
+                                    : person.message}
+                                </p>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
                     </nav>
                   </div>
                   <div className="mt-5 flex-1 h-0 overflow-y-auto"></div>
@@ -361,47 +342,29 @@ export default function Example() {
         <div className="hidden md:flex md:w-96 md:flex-col md:fixed md:inset-y-0">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex flex-col flex-grow pt-5 bg-white overflow-y-auto">
-            <nav className="h-full overflow-y-auto" aria-label="Directory">
-              {Object.keys(directory).map((letter) => (
-                <div key={letter} className="relative">
-                  <div className="z-10 sticky top-0 border-t border-b border-gray-200 bg-gray-50 px-6 py-1 text-sm font-medium text-gray-500">
-                    <h3>{letter}</h3>
-                  </div>
-                  <ul
-                    role="list"
-                    className="relative z-0 divide-y divide-gray-200"
-                  >
-                    {directory[letter].map((person) => (
-                      <li key={person.id} className="bg-white">
-                        <div className="relative px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                          <div className="flex-shrink-0">
-                            <img
-                              className="h-10 w-10 rounded-full"
-                              src={person.imageUrl}
-                              alt=""
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <a href="#" className="focus:outline-none">
-                              {/* Extend touch target to entire panel */}
-                              <span
-                                className="absolute inset-0"
-                                aria-hidden="true"
-                              />
-                              <p className="text-sm font-medium text-gray-900">
-                                {person.name}
-                              </p>
-                              <p className="text-sm text-gray-500 truncate">
-                                {person.role}
-                              </p>
-                            </a>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+            <nav
+              className="h-full overflow-y-auto border-r-2"
+              aria-label="Directory"
+            >
+              <ul role="list" className="relative z-0 divide-y divide-gray-200">
+                {_data?.map((person) => (
+                  <li key={person.id} className="bg-white">
+                    <div className="relative px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                      <div className="flex-1 min-w-0">
+                        <span className="absolute inset-0" aria-hidden="true" />
+                        <p className="text-sm font-medium text-gray-900">
+                          {person.name}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {person.message.length > 60
+                            ? `${person.message.slice(0, 60)}...`
+                            : person.message}
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </nav>
             <div className="mt-5 flex-1 flex flex-col"></div>
           </div>
@@ -422,62 +385,37 @@ export default function Example() {
           <main>
             <div className="py-6">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                <h1 className="text-2xl font-semibold text-gray-900">
-                  Dashboard
-                </h1>
+                <h2 className="text-2xl font-semibold text-gray-900">
+                  {data.name}
+                </h2>
               </div>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                <ul role="list" className="divide-y divide-gray-200">
-                  {activityItems.map((activityItem) => (
-                    <li key={activityItem.id} className="py-4">
-                      <div className="flex space-x-3">
-                        <img
-                          className="h-6 w-6 rounded-full"
-                          src={activityItem.person.imageUrl}
-                          alt=""
-                        />
-                        <div className="flex-1 space-y-1">
-                          <div className="flex items-center justify-between">
-                            <h3 className="text-sm font-medium">
-                              {activityItem.person.name}
-                            </h3>
-                            <p className="text-sm text-gray-500">
-                              {activityItem.time}
-                            </p>
-                          </div>
-                          <p className="text-sm text-gray-500">
-                            Deployed {activityItem.project} (
-                            {activityItem.commit} in master) to{" "}
-                            {activityItem.environment}
-                          </p>
-                        </div>
+                {
+                  <div className="flex space-x-3">
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-medium">{data.email}</h3>
+                        <p className="text-sm text-gray-500">
+                          {data.createdAt}
+                        </p>
                       </div>
-                    </li>
-                  ))}
-                </ul>
-                <div>
-                  <label
-                    htmlFor="comment"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Add your comment
-                  </label>
-                  <div className="mt-1">
-                    <textarea
-                      rows={4}
-                      name="comment"
-                      id="comment"
-                      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                      defaultValue={""}
-                    />
+                      <p className="text-md text-gray-600">
+                        {data.startDate} to {data.endDate}
+                      </p>
+                      <p className="text-md text-gray-600">{data.room}</p>
+                    </div>
                   </div>
-                </div>
-                <button
-                  type="button"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                }
+
+                <label
+                  htmlFor="comment"
+                  className="block text-sm font-medium text-gray-700"
                 >
-                  Button text
-                </button>
+                  Message
+                </label>
+                <div className="shadow-sm block w-full h-48 p-4 sm:text-sm border-gray-300 rounded-md">
+                  {data.message}
+                </div>
               </div>
             </div>
           </main>

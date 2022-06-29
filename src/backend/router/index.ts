@@ -29,8 +29,9 @@ export const appRouter = createRouter()
       passphrase: z.string(),
     }),
     async resolve({ input, ctx }) {
-      if (ctx.token === process.env.NEXT_PUBLIC_ADMIN_TOKEN)
+      if (ctx.token === process.env.NEXT_PUBLIC_ADMIN_TOKEN) {
         return { admin: true, hasToken: true };
+      }
       const admin = await prisma.user.findFirst({
         where: { passphrase: input.passphrase },
       });
@@ -38,6 +39,14 @@ export const appRouter = createRouter()
         return;
       }
       return { admin: true, hasToken: false };
+    },
+  })
+
+  .query("get-messages", {
+    async resolve({ ctx }) {
+      // if (ctx.token === process.env.NEXT_PUBLIC_ADMIN_TOKEN) {
+      return await prisma.booking.findMany({});
+      // }
     },
   });
 

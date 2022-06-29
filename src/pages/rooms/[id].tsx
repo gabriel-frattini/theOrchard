@@ -74,7 +74,7 @@ const product = {
   ],
 };
 
-function classNames(...classes) {
+function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -143,7 +143,6 @@ export default function Room() {
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl text-gray-900">{product.price}</p>
             </div>
->
 
             <div className="mt-6">
               <h3 className="sr-only">Description</h3>
@@ -154,9 +153,7 @@ export default function Room() {
               />
             </div>
 
-           
             <Contact />
-
           </div>
         </div>
       </div>

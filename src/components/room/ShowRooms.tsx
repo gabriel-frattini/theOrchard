@@ -5,7 +5,6 @@ import clsx from "clsx";
 import Link from "next/link";
 
 import { Container } from "@/components/Container";
-import backgroundImage from "@/images/background-features.jpg";
 import deluxeroom from "@/images/deluxeroom.jpg";
 import twinroom from "@/images/twinroom.jpg";
 import kingroom from "@/images/kingroom.jpg";
@@ -75,6 +74,14 @@ export const RoomImages = () => {
 
 interface ParentCompProps {
   childComp?: React.ReactNode;
+  data: any;
+}
+
+interface roomProps {
+  id: number;
+  roomName: string;
+  roomPrice: number;
+  roomDescription: string;
 }
 
 export const ShowRooms: React.FC<ParentCompProps> = (props) => {
@@ -124,7 +131,7 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
             <>
               <div className="-mx-4 flex overflow-x-auto pb-4 sm:mx-0 sm:overflow-visible sm:pb-0 lg:col-span-5">
                 <Tab.List className="relative z-10 flex space-x-4 whitespace-nowrap px-4 sm:mx-auto sm:px-0 lg:mx-0 lg:block lg:space-y-1 lg:space-x-0 lg:whitespace-normal">
-                  {features.map((feature, featureIndex) => (
+                  {props.data.map((room: roomProps, featureIndex: number) => (
                     <div
                       key={featureIndex}
                       className={clsx(
@@ -150,7 +157,7 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
                           )}
                         >
                           <span className="absolute inset-0  rounded-full lg:rounded-r-none lg:rounded-l-xl" />
-                          {feature.title}
+                          {room.roomName}
                         </Tab>
                       </h3>
                       <p
@@ -160,13 +167,13 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
                             selectedIndex !== featureIndex,
                         })}
                       >
-                        {feature.description}
+                        {room.roomDescription}
                       </p>
                     </div>
                   ))}
                 </Tab.List>
               </div>
-              {props.childComp}
+             <RoomImages  /> 
             </>
           )}
         </Tab.Group>

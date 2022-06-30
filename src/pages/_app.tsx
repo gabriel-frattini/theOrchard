@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import PlausibleProvider from "next-plausible";
 import Head from "next/head";
 import { AppType } from "next/dist/shared/lib/utils";
+import superjson from "superjson";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const description =
@@ -75,6 +76,7 @@ export default withTRPC<AppRouter>({
      */
     const url = `${getBaseUrl()}/api/trpc`;
 
+    const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
     return {
       headers() {
         return {
@@ -82,6 +84,14 @@ export default withTRPC<AppRouter>({
         };
       },
       url,
+
+      queryClientConfig: {
+        defaultOptions: {
+          queries: {
+            staleTime: ONE_DAY_IN_SECONDS,
+          },
+        },
+      },
       /**
        * @link https://react-query.tanstack.com/reference/QueryClient
        */
@@ -92,4 +102,20 @@ export default withTRPC<AppRouter>({
    * @link https://trpc.io/docs/ssr
    */
   ssr: true,
+  responseMeta({ ctx, clientErrors }) {
+    if (clientErrors.length) {
+      // propagate http first error from API calls
+      return {
+        status: clientErrors[0].data?.httpStatus ?? 500,
+      };
+    }
+
+    // cache request for 1 day + revalidate once every second
+    const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
+    return {
+      headers: {
+        "cache-control": `s-maxage=1, stale-while-revalidate=${ONE_DAY_IN_SECONDS}`,
+      },
+    };
+  },
 })(MyApp);

@@ -16,12 +16,12 @@ const Admin: React.FC<Props> = () => {
   const { mutate, isLoading, data } = trpc.useMutation(["admin.login"], {
     onSuccess: (data) => {
       if (data.admin) {
-        if (!data.hasToken) {
-          setCookies("admin-token", process.env.NEXT_PUBLIC_ADMIN_TOKEN);
-          router.push("/admin/dashboard");
-        }
+        router.push("/admin/dashboard");
       }
       return;
+    },
+    onError: (err) => {
+      console.log("err", err);
     },
   });
 

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Disclosure, RadioGroup, Tab } from "@headlessui/react";
-import { StarIcon } from "@heroicons/react/solid";
+import { StarIcon, PencilIcon } from "@heroicons/react/solid";
 import { HeartIcon, MinusSmIcon, PlusSmIcon } from "@heroicons/react/outline";
+import { trpc } from "@/utils/trpc";
+import { updateRoomSchema } from "@/backend/schema/admin.schema";
 
 const product = {
   name: "Zip Tote Basket",
@@ -36,7 +38,7 @@ const product = {
     },
   ],
   description: `
-    <p>The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.</p>
+    The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.
   `,
   details: [
     {
@@ -61,6 +63,17 @@ function classNames(...classes: any) {
 
 interface ParentCompProps {
   childComp?: React.ReactNode;
+  handleEdit?: () => void;
+  isEditing?: Boolean;
+  room: any;
+  data?:
+    | {
+        id: number;
+        roomName: string;
+        roomPrice: number;
+        roomDescription: string;
+      }
+    | updateRoomSchema;
 }
 
 export const Product: React.FC<ParentCompProps> = (props) => {
@@ -113,24 +126,96 @@ export const Product: React.FC<ParentCompProps> = (props) => {
       </Tab.Group>
 
       {/* Product info */}
-      <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
-        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
-          {product.name}
-        </h1>
-        <div className="mt-3">
-          <h2 className="sr-only">Product information</h2>
-          <p className="text-3xl text-gray-900">{product.price}</p>
-        </div>
-        <div className="mt-6">
-          <h3 className="sr-only">Description</h3>
-
-          <div
-            className="text-base text-gray-700 space-y-6 mb-12"
-            dangerouslySetInnerHTML={{ __html: product.description }}
-          />
-        </div>
-        {props.childComp}
-      </div>
+      <EditRoomDetails handleEdit={props.handleEdit} room={props.room.room} />
     </>
+  );
+};
+
+const RoomDetails = (props: ParentCompProps) => {
+  return (
+    <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 relative">
+      {props?.handleEdit && (
+        <PencilIcon
+          width={24}
+          className="absolute right-0 top-0 cursor-pointer"
+          onClick={props.handleEdit}
+        />
+      )}
+      <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
+        {product.name}
+      </h1>
+      <div className="mt-3">
+        <h2 className="sr-only">Product information</h2>
+        <p className="text-3xl text-gray-900">{product.price}</p>
+      </div>
+      <div className="mt-6">
+        <h3 className="sr-only">Description</h3>
+
+        <div
+          className="text-base text-gray-700 space-y-6 mb-12"
+          dangerouslySetInnerHTML={{ __html: product.description }}
+        />
+      </div>
+      {props.childComp}
+    </div>
+  );
+};
+
+const EditRoomDetails = (props: ParentCompProps) => {
+  const [roomName, setRoomName] = React.useState<string>(props.room.roomName);
+  const [roomPrice, setRoomPrice] = React.useState<any>(props.room.roomPrice);
+  const [roomDesc, setRoomDesc] = React.useState<string>(
+    props.room.roomDescription
+  );
+  const mutate = trpc.useMutation(["admin.update-room"]);
+
+  const handleSaveNewRoomDetails = () => {
+    mutate.mutate({
+      id: props.room.id,
+      roomName,
+      roomPrice: Number(roomPrice),
+      roomDescription: roomDesc,
+    });
+  };
+
+  return (
+    <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 relative">
+      <button
+        className="absolute right-0 top-0 inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        onClick={handleSaveNewRoomDetails}
+      >
+        Save
+      </button>
+      <h1 className="">
+        <input
+          value={roomName}
+          onChange={(e) => setRoomName(e.target.value)}
+          className="text-3xl font-extrabold tracking-tight text-gray-900 placeholder-gray-900 border-none"
+          type="text"
+        />
+      </h1>
+      <div className="mt-3">
+        <h2 className="sr-only">Product information</h2>
+        <input
+          type="text"
+          value={roomPrice}
+          onChange={(e) => setRoomPrice(e.target.value)}
+          className="text-3xl placeholder-gray-900 text-gray-900 border-none"
+        />
+      </div>
+      <div className="mt-6">
+        <h3 className="sr-only">Description</h3>
+
+        <div className="text-base text-gray-700 space-y-6 mb-12" />
+        <textarea
+          rows={10}
+          cols={50}
+          value={roomDesc}
+          onChange={(e) => setRoomDesc(e.target.value)}
+          className="placeholder-text-gray-700 border-none"
+        />
+      </div>
+      {props.childComp}
+    </div>
   );
 };

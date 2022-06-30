@@ -30,6 +30,13 @@ model User {
   passphrase String
 }
 
+model Room {
+  id Int @id @default(autoincrement())
+  roomName String
+  roomPrice Int
+  roomDescription String @db.VarChar(255)
+}
+
 enum Role {
   USER
   ADMIN

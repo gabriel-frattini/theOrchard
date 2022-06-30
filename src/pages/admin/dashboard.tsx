@@ -2,21 +2,13 @@ import { Fragment, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { MenuAlt2Icon, XIcon } from "@heroicons/react/outline";
 import { createBookingInput } from "@/backend/schema/booking.schema";
-import { getBookingQuery } from "@/backend/schema/admin.schema";
+
 import { trpc } from "@/utils/trpc";
 import Link from "next/link";
 
-interface SingleBookingProps {
-  data: createBookingInput;
-}
 
-interface BookingsProps {
-  data: createBookingInput[];
-}
 
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(" ");
-}
+
 
 const SingleBooking = ({ data }: any) => {
   return (
@@ -129,8 +121,8 @@ export default function Admin() {
                           role="list"
                           className="relative z-0 divide-y divide-gray-200"
                         >
-                          {data?.map((person) => (
-                            <li key={person.id} className="bg-white">
+                          {data?.map((person,idx) => (
+                            <li key={idx} className="bg-white">
                               <div className="relative px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                                 <div className="flex-1 min-w-0">
                                   <span
@@ -174,9 +166,9 @@ export default function Admin() {
                   role="list"
                   className="relative z-0 divide-y divide-gray-200"
                 >
-                  {data?.map((person) => (
+                  {data?.map((person,idx) => (
                     <li
-                      key={person.id}
+                      key={idx}
                       className="bg-white  hover:cursor-pointer"
                       onClick={() => setActiveBooking(person)}
                     >

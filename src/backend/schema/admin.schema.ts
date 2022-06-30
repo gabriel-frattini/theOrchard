@@ -11,3 +11,12 @@ export const getBooking = z.object({
 });
 
 export type getBookingQuery = z.TypeOf<typeof getBooking>;
+
+export const updateRoom = z.object({
+  id: z.number(),
+  roomName: z.string(),
+  roomPrice: z.number(),
+  roomDescription: z.string(),
+});
+
+export type updateRoomSchema = z.TypeOf<typeof updateRoom>;

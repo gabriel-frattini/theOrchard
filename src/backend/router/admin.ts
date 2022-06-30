@@ -1,6 +1,9 @@
 import { createRouter } from "./context";
 import { prisma } from "../utils/prisma";
 import { z } from "zod";
+import { serialize } from "cookie";
+import { updateRoom } from "../schema/admin.schema"
+require("dotenv").config();
 
 export const AdminRouter = createRouter()
   .mutation("login", {
@@ -17,7 +20,19 @@ export const AdminRouter = createRouter()
       if (!admin) {
         return { admin: false };
       }
-      return { admin: true, hasToken: false };
+
+      ctx.res?.setHeader(
+        "Set-Cookie",
+        serialize(
+          "admin-token",
+          process.env.NEXT_PUBLIC_ADMIN_TOKEN || "admin",
+          {
+            path: "/",
+          }
+        )
+      );
+
+      return { admin: true };
     },
   })
 
@@ -26,5 +41,41 @@ export const AdminRouter = createRouter()
       if (ctx.token === process.env.NEXT_PUBLIC_ADMIN_TOKEN) {
         return await prisma.booking.findMany();
       }
+    },
+  })
+
+  .query("get-rooms", {
+    async resolve() {
+      return await prisma.room.findMany();
+    },
+  })
+
+  .mutation("update-room", {
+    input: updateRoom,
+    async resolve({ input }) {
+      await prisma.room.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          roomName: input.roomName,
+          roomPrice: input.roomPrice,
+          roomDescription: input.roomDescription,
+        },
+      });
+    },
+  })
+
+  .query("get-room-by-id", {
+    input: z.object({ id: z.number() }),
+    async resolve({ input }) {
+      const room = await prisma.room.findFirst({
+        where: {
+          id: input.id,
+        },
+      });
+      return {
+        room,
+      };
     },
   });

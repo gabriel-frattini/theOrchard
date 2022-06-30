@@ -43,7 +43,7 @@ export const RoomImages = () => {
     <>
       <Tab.Panels className="lg:col-span-7">
         {features.map((feature, idx) => (
-          <Tab.Panel key={feature.title} unmount={false}>
+          <Tab.Panel key={idx} unmount={false}>
             <div className="relative sm:px-6 lg:hidden">
               <div className="absolute -inset-x-4 -top-[6.5rem] -bottom-[4.25rem] bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl" />
               <p className="relative mx-auto max-w-2xl text-base text-white sm:text-center">
@@ -126,7 +126,7 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
                 <Tab.List className="relative z-10 flex space-x-4 whitespace-nowrap px-4 sm:mx-auto sm:px-0 lg:mx-0 lg:block lg:space-y-1 lg:space-x-0 lg:whitespace-normal">
                   {features.map((feature, featureIndex) => (
                     <div
-                      key={feature.title}
+                      key={featureIndex}
                       className={clsx(
                         "group relative rounded-full py-1 px-4 lg:rounded-r-none lg:rounded-l-xl lg:p-6",
                         {

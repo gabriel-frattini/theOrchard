@@ -5,88 +5,39 @@ import clsx from "clsx";
 import Link from "next/link";
 
 import { Container } from "@/components/Container";
-import deluxeroom from "@/images/deluxeroom.jpg";
-import twinroom from "@/images/twinroom.jpg";
-import kingroom from "@/images/kingroom.jpg";
-import queenroom from "@/images/queenroom.jpg";
-
-const features = [
-  {
-    title: "King Room",
-    description:
-      "Airconditioned doubleroom with own bathroom and a view over the garden",
-    image: kingroom,
-  },
-  {
-    title: "Queen Room",
-    description:
-      "Airconditioned doubleroom with own bathroom and a view over the garden",
-    image: queenroom,
-  },
-  {
-    title: "Doubleroom Deluxe",
-    description:
-      "Airconditioned doubleroom with own bathroom and a view over the garden",
-    image: deluxeroom,
-  },
-  {
-    title: "Doubleroom",
-    description:
-      "Airconditioned doubleroom with own bathroom and a view over the garden",
-    image: twinroom,
-  },
-];
-
-export const RoomImages = () => {
-  return (
-    <>
-      <Tab.Panels className="lg:col-span-7">
-        {features.map((feature, idx) => (
-          <Tab.Panel key={idx} unmount={false}>
-            <div className="relative sm:px-6 lg:hidden">
-              <div className="absolute -inset-x-4 -top-[6.5rem] -bottom-[4.25rem] bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl" />
-              <p className="relative mx-auto max-w-2xl text-base text-white sm:text-center">
-                {feature.description}
-              </p>
-            </div>
-            <Link href={`rooms/${idx}`}>
-              <p className="flex  font-medium text-lg max-w-fit hover:border-black border-b-gray-50 cursor-pointer border-b-2">
-                View Room
-              </p>
-            </Link>
-            <Link href={`rooms/${idx}`}>
-              <div className="relative mt-10 aspect-[1085/730] w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:max-w-[57.8125rem]  hover:cursor-pointer">
-                <Image
-                  src={feature.image}
-                  alt=""
-                  layout="fill"
-                  objectFit="contain"
-                  priority
-                />
-              </div>
-            </Link>
-          </Tab.Panel>
-        ))}
-      </Tab.Panels>
-    </>
-  );
-};
+import { useUtils } from "@/utils/trpc";
 
 interface ParentCompProps {
   childComp?: React.ReactNode;
-  data: any;
+  data: roomProps[];
+}
+
+interface imageProp {
+  url: string;
 }
 
 interface roomProps {
   id: number;
   roomName: string;
+  roomSlug: string;
   roomPrice: number;
   roomDescription: string;
+  roomImages: imageProp[];
 }
 
 export const ShowRooms: React.FC<ParentCompProps> = (props) => {
-  let [tabOrientation, setTabOrientation] = useState("horizontal");
+  const utils = useUtils();
 
+  useEffect(() => {
+    props.data.forEach((room) =>
+      utils.prefetchQuery([
+        "room.get-room-by-slug",
+        { roomSlug: room.roomSlug },
+      ])
+    );
+  }, []);
+
+  let [tabOrientation, setTabOrientation] = useState("horizontal");
   useEffect(() => {
     let lgMediaQuery = window.matchMedia("(min-width: 1024px)");
 
@@ -135,7 +86,7 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
                     <div
                       key={featureIndex}
                       className={clsx(
-                        "group relative rounded-full py-1 px-4 lg:rounded-r-none lg:rounded-l-xl lg:p-6",
+                        "group relative rounded-full lg:min-w-[20rem] py-1 px-4 lg:rounded-r-none lg:rounded-l-xl lg:p-6",
                         {
                           "bg-white lg:bg-white lg:ring-1 lg:ring-inset lg:ring-white/100 shadow-xl shadow-slate-900/10":
                             selectedIndex === featureIndex,
@@ -173,7 +124,30 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
                   ))}
                 </Tab.List>
               </div>
-             <RoomImages  /> 
+              <Tab.Panels className="lg:col-span-7">
+                {props.data.map((room: roomProps, idx: number) => (
+                  <Tab.Panel key={idx} unmount={false}>
+                    <Link href={`rooms/${room.roomSlug}`}>
+                      <div className="relative mt-10 aspect-[1085/730] w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:max-w-[57.8125rem]  hover:cursor-pointer">
+                        <Image
+                          src={room.roomImages[0].url}
+                          alt=""
+                          layout="fill"
+                          objectFit="contain"
+                          priority
+                        />
+                      </div>
+                    </Link>
+                    <div className="flex justify-center max-w-[925px] mt-4">
+                      <Link href={`rooms/${room.roomSlug}`}>
+                        <p className="flex font-medium text-lg max-w-fit  cursor-pointer border-b-2">
+                          {room.roomName}
+                        </p>
+                      </Link>
+                    </div>
+                  </Tab.Panel>
+                ))}
+              </Tab.Panels>
             </>
           )}
         </Tab.Group>

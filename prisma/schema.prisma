@@ -14,27 +14,36 @@ datasource db {
 }
 
 model Booking {
-  id            Int            @id @default(autoincrement())
-  createdAt     DateTime       @default(now())
-  name          String
-  email         String
-  role          Role           @default(USER)
-  startDate     String?
-  endDate       String?
-  room          String?
-  message String
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name      String
+  email     String
+  role      Role     @default(USER)
+  startDate String?
+  endDate   String?
+  room      String?
+  message   String
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id         Int    @id @default(autoincrement())
   passphrase String
 }
 
 model Room {
-  id Int @id @default(autoincrement())
-  roomName String
-  roomPrice Int
-  roomDescription String @db.VarChar(255)
+  id              Int        @id @default(autoincrement())
+  roomName        String
+  roomSlug        String
+  roomPrice       Int
+  roomDescription String     @db.VarChar(255)
+  roomImages      imageUrl[]
+}
+
+model imageUrl {
+  id         Int    @id @default(autoincrement())
+  imageUrl   Room   @relation(fields: [imageUrlId], references: [id])
+  url        String
+  imageUrlId Int
 }
 
 enum Role {

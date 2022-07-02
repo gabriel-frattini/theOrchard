@@ -2,7 +2,8 @@ import { createRouter } from "./context";
 import { prisma } from "../utils/prisma";
 import { z } from "zod";
 import { serialize } from "cookie";
-import { updateRoom } from "../schema/admin.schema"
+import { updateRoom } from "../schema/admin.schema";
+
 require("dotenv").config();
 
 export const AdminRouter = createRouter()
@@ -44,12 +45,6 @@ export const AdminRouter = createRouter()
     },
   })
 
-  .query("get-rooms", {
-    async resolve() {
-      return await prisma.room.findMany();
-    },
-  })
-
   .mutation("update-room", {
     input: updateRoom,
     async resolve({ input }) {
@@ -63,19 +58,5 @@ export const AdminRouter = createRouter()
           roomDescription: input.roomDescription,
         },
       });
-    },
-  })
-
-  .query("get-room-by-id", {
-    input: z.object({ id: z.number() }),
-    async resolve({ input }) {
-      const room = await prisma.room.findFirst({
-        where: {
-          id: input.id,
-        },
-      });
-      return {
-        room,
-      };
     },
   });

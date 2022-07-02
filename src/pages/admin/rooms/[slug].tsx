@@ -10,12 +10,10 @@ const AdminEdit = (props: Props) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const router = useRouter();
 
-  const { id } = router.query;
-  const slug = Number(id);
-
+  const slug = router.query;
   const { data, isLoading, error } = trpc.useQuery([
-    "admin.get-room-by-id",
-    { id: slug },
+    "room.get-room-by-slug",
+    { roomSlug: String(router.query.slug) },
   ]);
 
   if (isLoading) return <></>;

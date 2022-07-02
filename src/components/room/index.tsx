@@ -1,19 +1,30 @@
-import { ShowRooms, RoomImages } from "./ShowRooms";
+import { ShowRooms } from "./ShowRooms";
 
 import React from "react";
 import { trpc } from "@/utils/trpc";
 
-type Props = {};
+interface Props {}
+
+interface roomProps {
+  id: number;
+  roomName: string;
+  roomPrice: number;
+  roomDescription: string;
+  imageUrl: string;
+  roomSlug: string;
+  roomImages: any;
+}
 
 export const Rooms = (props: Props) => {
-  const { data, isLoading, error } = trpc.useQuery(["admin.get-rooms"]);
+  const { data, isLoading, error } = trpc.useQuery(["room.get-rooms"]);
 
   if (data) {
     console.log(data);
     return (
       <>
-        <ShowRooms data={data} />
+        <ShowRooms data={data as unknown as roomProps[]} />
       </>
     );
   }
+  return <></>;
 };

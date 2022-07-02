@@ -62,7 +62,7 @@ const posts = [
 ];
 
 export default function AdminRooms() {
-  const { data, isLoading, error } = trpc.useQuery(["admin.get-rooms"]);
+  const { data, isLoading, error } = trpc.useQuery(["room.get-rooms"]);
 
   if (isLoading) return <></>;
   if (error) console.error(error);
@@ -84,22 +84,22 @@ export default function AdminRooms() {
               key={idx}
               className="flex flex-col rounded-lg shadow-lg overflow-hidden"
             >
-              <div className="flex-shrink-0">
-                <Image
-                  className="h-48 w-full object-cover"
-                  src={kingroom}
-                  alt=""
-                />
-              </div>
+              <a
+                href={`/admin/rooms/${room.roomSlug}`}
+                className="hover:underline"
+              >
+                <div className="flex-shrink-0">
+                  <Image
+                    className="h-48 w-full object-cover"
+                    src={room.roomImages[0].url}
+                    alt=""
+                  />
+                </div>
+              </a>
               <div className="flex-1 bg-white p-6 flex flex-col justify-between">
                 <div className="flex-1">
                   <p className="text-sm font-medium text-indigo-600">
-                    <a
-                      href={`/admin/rooms/${room.id}`}
-                      className="hover:underline"
-                    >
-                      {room.roomName}
-                    </a>
+                    {room.roomName}
                   </p>
                   <p className="text-xl font-semibold text-gray-900">
                     {room.roomPrice}

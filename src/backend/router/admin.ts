@@ -12,28 +12,22 @@ export const AdminRouter = createRouter()
       passphrase: z.string(),
     }),
     async resolve({ input, ctx }) {
-      if (ctx.token === process.env.NEXT_PUBLIC_ADMIN_TOKEN) {
-        return { admin: true, hasToken: true };
-      }
       const admin = await prisma.user.findFirst({
         where: { passphrase: input.passphrase },
       });
       if (!admin) {
-        return { admin: false };
+        return { redirect: "/admin-login" };
       }
 
       ctx.res?.setHeader(
         "Set-Cookie",
-        serialize(
-          "admin-token",
-          process.env.NEXT_PUBLIC_ADMIN_TOKEN || "admin",
-          {
-            path: "/",
-          }
-        )
+        serialize("admin-token", process.env.NEXT_PUBLIC_ADMIN_TOKEN!, {
+          path: "/",
+          maxAge: 60 * 60 * 24 * 7 * 52,
+        })
       );
 
-      return { admin: true };
+      return { redirect: "/admin/dashboard" };
     },
   })
 

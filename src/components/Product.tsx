@@ -73,12 +73,13 @@ export const Product: React.FC<ParentCompProps> = (props) => {
           ))}
         </Tab.Panels>
       </Tab.Group>
-
-      {/* Product info */}
       {props.handleEdit ? (
         <EditRoomDetails handleEdit={props.handleEdit} room={props.room.room} />
       ) : (
-        <RoomDetails room={data?.room} />
+        <div>
+          <RoomDetails room={data?.room} />
+          {props.childComp}
+        </div>
       )}
     </>
   );

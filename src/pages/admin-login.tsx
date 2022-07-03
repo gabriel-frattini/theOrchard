@@ -15,13 +15,7 @@ const Admin: React.FC<Props> = () => {
   const [passphrase, setPassphrase] = React.useState("");
   const { mutate, isLoading, data } = trpc.useMutation(["admin.login"], {
     onSuccess: (data) => {
-      if (data.admin) {
-        router.push("/admin/dashboard");
-      }
-      return;
-    },
-    onError: (err) => {
-      console.log("err", err);
+      router.push(data.redirect);
     },
   });
 

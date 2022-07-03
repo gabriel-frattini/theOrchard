@@ -234,7 +234,7 @@ export default function Admin() {
 
   if (isLoading) return <></>;
 
-  if (data.length) {
+  if (data?.length) {
     const [activeBooking, setActiveBooking] = useState(data[0]);
     return (
       <>

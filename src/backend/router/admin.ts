@@ -39,6 +39,19 @@ export const AdminRouter = createRouter()
     },
   })
 
+  .mutation("delete-message", {
+    input: z.object({
+      id: z.number(),
+    }),
+    async resolve({ input }) {
+      await prisma.booking.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    },
+  })
+
   .mutation("update-room", {
     input: updateRoom,
     async resolve({ input }) {

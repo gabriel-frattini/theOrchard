@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "db1": "pscale connect ecom main --port 3309",
+    "db2": "pscale connect ecom ecom-shadow --port 3310",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

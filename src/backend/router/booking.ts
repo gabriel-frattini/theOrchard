@@ -13,7 +13,7 @@ export const BookingRouter = createRouter().mutation("create-booking", {
           ...input,
         },
       });
-      return { data: booking };
+      return { id: booking.id };
     } catch (error) {
       new trpc.TRPCError({
         code: "BAD_REQUEST",

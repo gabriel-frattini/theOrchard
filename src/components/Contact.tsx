@@ -1,12 +1,23 @@
 import { MailIcon, PhoneIcon } from "@heroicons/react/outline";
 import { trpc } from "@/utils/trpc";
+import * as React from "react";
+import { useRouter } from "next/router";
 
 export function Contact() {
-  const bookingMutation = trpc.useMutation(["booking.create-booking"]);
+  const mutation = trpc.useMutation(["booking.create-booking"]);
+  const [sentMessage, setSentMessage] = React.useState(false);
+  const router = useRouter();
 
-  const useContactForm = async (e: any) => {
+  React.useEffect(() => {
+    if (
+      sessionStorage.getItem("message") !== null &&
+      window.location.hash === "#success"
+    )
+      setSentMessage(true);
+  }, []);
+
+  const useContactForm = (e: any) => {
     e.preventDefault();
-
     const name: HTMLInputElement = e.target.elements.name;
     const email: HTMLInputElement = e.target.elements.email;
     const startDate: HTMLInputElement = e.target.elements.startDate;
@@ -21,12 +32,27 @@ export function Contact() {
       room: "king room",
       message: message.value,
     };
-    bookingMutation.mutate({ ...input });
-
+    mutation.mutate(
+      { ...input },
+      {
+        onSuccess(data) {
+          sessionStorage.setItem("message", JSON.stringify(data?.id));
+          const url = new URL(window.location.href);
+          url.hash = "#success";
+          router.push(url.href);
+          router.reload()
+        },
+      }
+    );
   };
 
   return (
-    <form onSubmit={useContactForm} className="grid lg:grid-cols-2 gap-6">
+    <form
+      onSubmit={useContactForm}
+      method="POST"
+      action="#"
+      className="grid lg:grid-cols-2 gap-6"
+    >
       <div className="lg:col-start-1">
         <label htmlFor="name" className="sr-only">
           name
@@ -95,33 +121,30 @@ export function Contact() {
       <div className="lg:col-span-2 h-64  flex flex-row-reverse justify-between">
         <div className="flex items-start">
           <button
-            disabled={bookingMutation.isLoading}
+            disabled={mutation.isLoading}
             type="submit"
             className="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
+          >
             Submit
           </button>
         </div>
-            {bookingMutation.isLoading && (
-              <div className="flex-col ">
-                <p className="text-lg leading-6 font-medium text-gray-500">
-                  thanks for reaching out! We’re thrilled to hear from you and will
-                  get back in touch with you soon!
-                </p>
-                <p className="text-lg leading-6 font-medium text-gray-500">
-                  {" "}
-                  Have a great day!
-                </p>
-              </div>
-            )}
-            {bookingMutation.isError && (
-              <div className="flex-col">
-                <p className="text-lg leading-6 font-medium text-gray-500">
-                  Your message could not be sent
-                </p>
-                <p className="text-lg leading-6 font-medium text-gray-500"> </p>
-              </div>
-            )}
+        {sentMessage && (
+          <div className="flex-col ">
+            <p className="text-lg leading-6 font-medium text-gray-500"></p>
+            <p className="text-lg leading-6 font-medium text-gray-500">
+              thanks for reaching out! We're thrilled to hear from you and will
+              get back in touch with you soon! Have a great day!
+            </p>
+          </div>
+        )}
+        {mutation.isError && (
+          <div className="flex-col">
+            <p className="text-lg leading-6 font-medium text-gray-500">
+              Your message could not be sent
+            </p>
+            <p className="text-lg leading-6 font-medium text-gray-500"> </p>
+          </div>
+        )}
       </div>
     </form>
   );

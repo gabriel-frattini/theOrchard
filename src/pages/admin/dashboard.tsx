@@ -1,12 +1,10 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { MenuAlt2Icon, XIcon } from "@heroicons/react/outline";
-import { createBookingInput } from "@/backend/schema/booking.schema";
 
-import { trpc } from "@/utils/trpc";
+import { trpc, useUtils } from "@/utils/trpc";
 import Link from "next/link";
 import { setCorrectPhrase } from "@/utils/functions";
-import { router } from "@trpc/server";
 import { useRouter } from "next/router";
 
 interface messageProps {
@@ -24,8 +22,8 @@ interface childCompsProps {
   data: messageProps[] | any;
   setSidebarOpen?: any;
   sidebarOpen?: any;
-  setActiveBooking?: any;
-  activeBooking?: any;
+  setActiveMsg?: any;
+  activeMsg?: any;
 }
 
 const MobileSidebar = ({
@@ -132,7 +130,7 @@ const MobileSidebar = ({
   );
 };
 
-const DesktopSidebar = ({ data, setActiveBooking }: childCompsProps) => {
+const DesktopSidebar = ({ data, setActiveMsg }: childCompsProps) => {
   return (
     <div className="hidden lg:flex lg:w-96 lg:flex-col lg:fixed lg:inset-y-0">
       {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -146,7 +144,7 @@ const DesktopSidebar = ({ data, setActiveBooking }: childCompsProps) => {
               <li
                 key={idx}
                 className="bg-white  hover:cursor-pointer"
-                onClick={() => setActiveBooking(person)}
+                onClick={() => setActiveMsg(person)}
               >
                 <div className="relative px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                   <div className="flex-1 min-w-0">
@@ -178,22 +176,22 @@ const DesktopSidebar = ({ data, setActiveBooking }: childCompsProps) => {
   );
 };
 
-const SingleBooking = ({ data }: any) => {
-  const mutate = trpc.useMutation(["admin.delete-message"]);
+const SingleBooking: React.FC<{ data: any; deleteMsg: () => void }> = (
+  props
+) => {
+  if (!props.data) return <></>;
 
-  const handleDeleteMessage = () => {
-    mutate.mutate({ id: data.id });
-  };
-  if (!data) return <></>;
   return (
     <div className="py-6 ">
       <div className="max-w-7xl flex justify-between mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-medium text-gray-900">{data.name}</h2>
+        <h2 className="text-2xl font-medium text-gray-900">
+          {props.data.name}
+        </h2>
         <XIcon
           width={24}
           height={24}
           className="cursor-pointer"
-          onClick={handleDeleteMessage}
+          onClick={() => props.deleteMsg()}
         />
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -201,15 +199,17 @@ const SingleBooking = ({ data }: any) => {
           <div className="flex space-x-3">
             <div className="flex-1 space-y-1">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium  mt-4 ">{data.email}</h3>
-                <p className="text-lg text-gray-500">
-                  Sent {data.createdAt.toString().split("T")[0]}
-                </p>
+                <h3 className="text-lg font-medium  mt-4 ">
+                  {props.data.email}
+                </h3>
+                {/* <p className="text-lg text-gray-500">
+                  Sent {props.data.createdAt.toString().split("T")[0]}
+                </p> */}
               </div>
               <p className="text-lg text-gray-600 mt-4">
-                {data.startDate} to {data.endDate}
+                {props.data.startDate} to {props.data.endDate}
               </p>
-              <p className="text-lg text-gray-600">{data.room}</p>
+              <p className="text-lg text-gray-600">{props.data.room}</p>
             </div>
           </div>
         }
@@ -221,7 +221,7 @@ const SingleBooking = ({ data }: any) => {
           Message
         </label>
         <div className="shadow-sm block w-full h-48 p-4 sm:text-sm border-gray-200 border-2 rounded-lg">
-          <p className="text-lg">{data.message}</p>
+          <p className="text-lg">{props.data.message}</p>
         </div>
       </div>
     </div>
@@ -229,59 +229,89 @@ const SingleBooking = ({ data }: any) => {
 };
 
 export default function Admin() {
-  const { data, isLoading, error } = trpc.useQuery(["admin.get-messages"]);
+  const utils = useUtils();
+  const { data, isLoading, refetch } = trpc.useQuery(["admin.get-messages"], {
+    refetchInterval: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    keepPreviousData: false,
+  });
+
+  console.log("isloading", isLoading, "data", data);
+
+  // useEffect(() => {
+  //   data?.forEach((msg) => {
+  //     utils.prefetchQuery(["admin.get-message-by-id", { id: msg.id }]);
+  //   });
+  // }, []);
+
+  // if (data) {
+  const mutate = trpc.useMutation(["admin.delete-message"]);
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeMsg, setActiveMsg] = useState(data ? data[0] : { id: 0 });
 
-  if (isLoading) return <></>;
-
-  if (data?.length) {
-    const [activeBooking, setActiveBooking] = useState(data[0]);
-    return (
-      <>
-        <div>
-          <MobileSidebar
-            setSidebarOpen={setSidebarOpen}
-            sidebarOpen={sidebarOpen}
-            data={data}
-          />
-          {/* Static sidebar for desktop */}
-          <DesktopSidebar data={data} setSidebarOpen={setSidebarOpen} />
-          <div className="lg:pl-64 flex flex-col flex-1">
-            <div className="sticky top-0 z-10 flex-shrink-0 flex h-16">
-              <button
-                type="button"
-                className="px-4  border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
-                onClick={() => setSidebarOpen(true)}
-              >
-                <span className="sr-only">Open sidebar</span>
-                <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
-              </button>
-              <div className="flex-1 p-8 flex justify-end cursor-pointer">
-                <Link href="/">
-                  <h1 className="font-medium text-xl">The Orchard</h1>
-                </Link>
-              </div>
-            </div>
-            <main className="lg:ml-36">
-              <div className="flex justify-center my-12">
-                <h1 className="text-2xl font-semibold">
-                  {setCorrectPhrase(new Date())}
-                </h1>
-              </div>
-              <SingleBooking data={activeBooking} />
-            </main>
-          </div>
-        </div>
-      </>
+  const deleteMsg = (id: number) => {
+    mutate.mutate(
+      { id },
+      {
+        onSuccess(input) {
+          utils.invalidateQueries(["admin.get-messages"]);
+        },
+      }
     );
-  }
+
+    console.log("data", data, "isloading", isLoading);
+  };
 
   return (
-    <main className="flex flex-col justify-center items-center gap-6 min-h-[100vh]">
-      <h1 className="text-2xl font-semibold">{setCorrectPhrase(new Date())}</h1>
-      <h1 className="text-2xl font-medium">
-        You currently dont have any messages
-      </h1>
-    </main>
+    <>
+      <div>
+        <MobileSidebar
+          setSidebarOpen={setSidebarOpen}
+          sidebarOpen={sidebarOpen}
+          data={data ? data : []}
+        />
+        {/* Static sidebar for desktop */}
+        <DesktopSidebar data={data ? data : []} setActiveMsg={setActiveMsg} />
+        <div className="lg:pl-64 flex flex-col flex-1">
+          <div className="sticky top-0 z-10 flex-shrink-0 flex h-16">
+            <button
+              type="button"
+              className="px-4  border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <span className="sr-only">Open sidebar</span>
+              <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
+            </button>
+            <div className="flex-1 p-8 flex justify-end cursor-pointer">
+              <Link href="/">
+                <h1 className="font-medium text-xl">The Orchard</h1>
+              </Link>
+            </div>
+          </div>
+          <main className="lg:ml-36">
+            <div className="flex justify-center my-12">
+              <h1 className="text-2xl font-semibold">
+                {setCorrectPhrase(new Date())}
+              </h1>
+            </div>
+            <SingleBooking
+              data={activeMsg}
+              deleteMsg={() => deleteMsg(activeMsg.id)}
+            />
+          </main>
+        </div>
+      </div>
+    </>
   );
+
+  // return (
+  //   <main className="flex flex-col justify-center items-center gap-6 min-h-[100vh]">
+  //     <h1 className="text-2xl font-semibold">{setCorrectPhrase(new Date())}</h1>
+  //     <h1 className="text-2xl font-medium">
+  //       You currently dont have any messages
+  //     </h1>
+  //   </main>
+  // );
 }

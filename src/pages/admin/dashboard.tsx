@@ -24,6 +24,7 @@ interface childCompsProps {
   sidebarOpen?: any;
   setActiveMsg?: any;
   activeMsg?: any;
+  setParamId?: any;
 }
 
 const MobileSidebar = ({
@@ -130,7 +131,7 @@ const MobileSidebar = ({
   );
 };
 
-const DesktopSidebar = ({ data, setActiveMsg }: childCompsProps) => {
+const DesktopSidebar = ({ data, setParamId }: childCompsProps) => {
   return (
     <div className="hidden lg:flex lg:w-96 lg:flex-col lg:fixed lg:inset-y-0">
       {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -144,7 +145,12 @@ const DesktopSidebar = ({ data, setActiveMsg }: childCompsProps) => {
               <li
                 key={idx}
                 className="bg-white  hover:cursor-pointer"
-                onClick={() => setActiveMsg(person)}
+                onClick={() => {
+                  const url = new URL(window.location.href);
+                  url.search = JSON.stringify(person.id);
+                  window.history.replaceState({}, "", url.toString());
+                  setParamId(JSON.stringify(person.id));
+                }}
               >
                 <div className="relative px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                   <div className="flex-1 min-w-0">
@@ -176,22 +182,30 @@ const DesktopSidebar = ({ data, setActiveMsg }: childCompsProps) => {
   );
 };
 
-const SingleBooking: React.FC<{ data: any; deleteMsg: () => void }> = (
+const SingleBooking: React.FC<{ deleteMsg: any; paramId: string }> = (
   props
 ) => {
-  if (!props.data) return <></>;
+  const router = useRouter();
+  console.log("paramid", props.paramId);
+  const { data, isLoading } = trpc.useQuery([
+    "admin.get-message-by-id",
+    {
+      id: parseInt(props.paramId),
+    },
+  ]);
+  if (isLoading) return <></>;
+
+  if (!data) return <div>no data</div>;
 
   return (
     <div className="py-6 ">
       <div className="max-w-7xl flex justify-between mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-medium text-gray-900">
-          {props.data.name}
-        </h2>
+        <h2 className="text-2xl font-medium text-gray-900">{data.name}</h2>
         <XIcon
           width={24}
           height={24}
           className="cursor-pointer"
-          onClick={() => props.deleteMsg()}
+          onClick={() => props.deleteMsg(data.id)}
         />
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -199,17 +213,15 @@ const SingleBooking: React.FC<{ data: any; deleteMsg: () => void }> = (
           <div className="flex space-x-3">
             <div className="flex-1 space-y-1">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium  mt-4 ">
-                  {props.data.email}
-                </h3>
+                <h3 className="text-lg font-medium  mt-4 ">{data.email}</h3>
                 {/* <p className="text-lg text-gray-500">
                   Sent {props.data.createdAt.toString().split("T")[0]}
                 </p> */}
               </div>
               <p className="text-lg text-gray-600 mt-4">
-                {props.data.startDate} to {props.data.endDate}
+                {data.startDate} to {data.endDate}
               </p>
-              <p className="text-lg text-gray-600">{props.data.room}</p>
+              <p className="text-lg text-gray-600">{data.room}</p>
             </div>
           </div>
         }
@@ -221,7 +233,7 @@ const SingleBooking: React.FC<{ data: any; deleteMsg: () => void }> = (
           Message
         </label>
         <div className="shadow-sm block w-full h-48 p-4 sm:text-sm border-gray-200 border-2 rounded-lg">
-          <p className="text-lg">{props.data.message}</p>
+          <p className="text-lg">{data.message}</p>
         </div>
       </div>
     </div>
@@ -230,6 +242,7 @@ const SingleBooking: React.FC<{ data: any; deleteMsg: () => void }> = (
 
 export default function Admin() {
   const utils = useUtils();
+  const [paramId, setParamId] = useState("");
   const { data, isLoading, refetch } = trpc.useQuery(["admin.get-messages"], {
     refetchInterval: false,
     refetchOnReconnect: false,
@@ -237,8 +250,9 @@ export default function Admin() {
     keepPreviousData: false,
   });
 
-  console.log("isloading", isLoading, "data", data);
-
+  useEffect(() => {
+    if (data) setParamId(JSON.stringify(data[0].id));
+  }, []);
   // useEffect(() => {
   //   data?.forEach((msg) => {
   //     utils.prefetchQuery(["admin.get-message-by-id", { id: msg.id }]);
@@ -249,19 +263,30 @@ export default function Admin() {
   const mutate = trpc.useMutation(["admin.delete-message"]);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeMsg, setActiveMsg] = useState(data ? data[0] : { id: 0 });
 
   const deleteMsg = (id: number) => {
     mutate.mutate(
       { id },
       {
         onSuccess(input) {
+          const cache = utils.getQueryData(["admin.get-messages"]) ?? [];
           utils.invalidateQueries(["admin.get-messages"]);
+
+          const idx = cache.map((object) => object.id).indexOf(id);
+          if (typeof cache[idx + 1] === "undefined") {
+            const url = new URL(window.location.href);
+            url.search = JSON.stringify(id - 1);
+            setParamId(JSON.stringify(id - 1));
+            window.history.replaceState({}, "", url.toString());
+          } else {
+            const url = new URL(window.location.href);
+            url.search = JSON.stringify(id + 1);
+            setParamId(JSON.stringify(id + 1));
+            window.history.replaceState({}, "", url.toString());
+          }
         },
       }
     );
-
-    console.log("data", data, "isloading", isLoading);
   };
 
   return (
@@ -273,7 +298,7 @@ export default function Admin() {
           data={data ? data : []}
         />
         {/* Static sidebar for desktop */}
-        <DesktopSidebar data={data ? data : []} setActiveMsg={setActiveMsg} />
+        <DesktopSidebar setParamId={setParamId} data={data ? data : []} />
         <div className="lg:pl-64 flex flex-col flex-1">
           <div className="sticky top-0 z-10 flex-shrink-0 flex h-16">
             <button
@@ -296,10 +321,7 @@ export default function Admin() {
                 {setCorrectPhrase(new Date())}
               </h1>
             </div>
-            <SingleBooking
-              data={activeMsg}
-              deleteMsg={() => deleteMsg(activeMsg.id)}
-            />
+            <SingleBooking deleteMsg={deleteMsg} paramId={paramId} />
           </main>
         </div>
       </div>

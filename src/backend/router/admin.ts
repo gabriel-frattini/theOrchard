@@ -39,19 +39,6 @@ export const AdminRouter = createRouter()
     },
   })
 
-  .mutation("get-message-by-id", {
-    input: z.object({
-      id: z.number(),
-    }),
-    async resolve({ input }) {
-      const msg = await prisma.booking.findUnique({
-        where: {
-          ...input,
-        },
-      });
-      return msg;
-    },
-  })
   .query("get-message-by-id", {
     input: z.object({
       id: z.number(),

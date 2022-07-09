@@ -3,6 +3,7 @@ import { ShowRooms } from "@/components/room/ShowRooms";
 import { Product } from "@/components/Product";
 import { useRouter } from "next/router";
 import { trpc } from "@/utils/trpc";
+import { Header } from "@/components/Header";
 
 type Props = {};
 
@@ -24,11 +25,14 @@ const AdminEdit = (props: Props) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-      <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-        <Product handleEdit={handleEdit} room={data} isEditing={isEditing} />
+    <>
+      <Header />
+      <div className=" flex items-center mx-auto min-h-[100vh]  px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start ">
+          <Product handleEdit={handleEdit} room={data} isEditing={isEditing} />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

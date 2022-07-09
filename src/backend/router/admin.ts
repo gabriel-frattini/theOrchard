@@ -34,7 +34,9 @@ export const AdminRouter = createRouter()
   .query("get-messages", {
     async resolve({ ctx }) {
       if (ctx.token === process.env.NEXT_PUBLIC_ADMIN_TOKEN) {
-        return await prisma.booking.findMany();
+        const messages = await prisma.booking.findMany();
+        if (!messages.length) return [];
+        return messages;
       }
     },
   })
@@ -49,6 +51,7 @@ export const AdminRouter = createRouter()
           ...input,
         },
       });
+
       return msg;
     },
   })
@@ -77,6 +80,33 @@ export const AdminRouter = createRouter()
           roomName: input.roomName,
           roomPrice: input.roomPrice,
           roomDescription: input.roomDescription,
+        },
+      });
+    },
+  })
+  .mutation("add-room", {
+    input: z.object({
+      image: z.string(),
+      id: z.number(),
+    }),
+    async resolve({ input }) {
+      const img = await prisma.imageUrl.create({
+        data: {
+          url: input.image,
+          imageUrlId: input.id,
+        },
+      });
+      return { img };
+    },
+  })
+  .mutation("delete-img", {
+    input: z.object({
+      id: z.number(),
+    }),
+    async resolve({ input: { id } }) {
+      await prisma.imageUrl.delete({
+        where: {
+          id,
         },
       });
     },

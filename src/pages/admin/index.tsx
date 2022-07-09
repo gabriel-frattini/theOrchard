@@ -6,6 +6,8 @@ import { trpc, useUtils } from "@/utils/trpc";
 import Link from "next/link";
 import { setCorrectPhrase } from "@/utils/functions";
 import { useRouter } from "next/router";
+import { Header } from "@/components/Header";
+import { router } from "@trpc/server";
 
 interface messageProps {
   id: number;
@@ -25,12 +27,16 @@ interface childCompsProps {
   setActiveMsg?: any;
   activeMsg?: any;
   setParamId?: any;
+  activeId?: number;
+  setActiveId?: any;
 }
 
 const MobileSidebar = ({
   data,
   setSidebarOpen,
   sidebarOpen,
+  activeId,
+  setActiveId,
 }: childCompsProps) => {
   return (
     <>
@@ -96,7 +102,13 @@ const MobileSidebar = ({
                       className="relative z-0 divide-y divide-gray-200"
                     >
                       {data.map((person: messageProps, idx: number) => (
-                        <li key={idx} className="bg-white">
+                        <li
+                          key={idx}
+                          className={
+                            activeId === person.id ? "bg-gray-50" : "bg-white"
+                          }
+                          onClick={() => setActiveId(person.id)}
+                        >
                           <div className="relative px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                             <div className="flex-1 min-w-0">
                               <span
@@ -131,7 +143,12 @@ const MobileSidebar = ({
   );
 };
 
-const DesktopSidebar = ({ data, setParamId }: childCompsProps) => {
+const DesktopSidebar = ({
+  data,
+  activeId,
+  setActiveId,
+  setParamId,
+}: childCompsProps) => {
   return (
     <div className="hidden lg:flex lg:w-96 lg:flex-col lg:fixed lg:inset-y-0">
       {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -144,8 +161,13 @@ const DesktopSidebar = ({ data, setParamId }: childCompsProps) => {
             {data?.map((person: messageProps, idx: number) => (
               <li
                 key={idx}
-                className="bg-white  hover:cursor-pointer"
+                className={
+                  activeId === person.id
+                    ? "bg-gray-50 hover:cursor-pointer"
+                    : "bg-white  hover:cursor-pointer"
+                }
                 onClick={() => {
+                  setActiveId(person.id);
                   const url = new URL(window.location.href);
                   url.search = JSON.stringify(person.id);
                   window.history.replaceState({}, "", url.toString());
@@ -241,8 +263,10 @@ const SingleBooking: React.FC<{ deleteMsg: any; paramId: string }> = (
 };
 
 export default function Admin() {
+  const router = useRouter();
   const utils = useUtils();
   const [paramId, setParamId] = useState("");
+  const [activeId, setActiveId] = useState<number>();
   const { data, isLoading, refetch } = trpc.useQuery(["admin.get-messages"], {
     refetchInterval: false,
     refetchOnReconnect: false,
@@ -251,15 +275,14 @@ export default function Admin() {
   });
 
   useEffect(() => {
-    if (data) setParamId(JSON.stringify(data[0].id));
+    if (data?.length) setParamId(JSON.stringify(data[0].id));
   }, []);
-  // useEffect(() => {
-  //   data?.forEach((msg) => {
-  //     utils.prefetchQuery(["admin.get-message-by-id", { id: msg.id }]);
-  //   });
-  // }, []);
+  useEffect(() => {
+    data?.forEach((msg) => {
+      utils.prefetchQuery(["admin.get-message-by-id", { id: msg.id }]);
+    });
+  }, []);
 
-  // if (data) {
   const mutate = trpc.useMutation(["admin.delete-message"]);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -288,6 +311,18 @@ export default function Admin() {
       }
     );
   };
+  if (!data?.length) {
+    return (
+      <main className="flex flex-col justify-center items-center gap-6 min-h-[100vh]">
+        <h1 className="text-2xl font-semibold">
+          {setCorrectPhrase(new Date())}
+        </h1>
+        <h1 className="text-2xl font-medium">
+          You currently dont have any messages
+        </h1>
+      </main>
+    );
+  }
 
   return (
     <>
@@ -296,9 +331,16 @@ export default function Admin() {
           setSidebarOpen={setSidebarOpen}
           sidebarOpen={sidebarOpen}
           data={data ? data : []}
+          activeId={activeId}
+          setActiveId={setActiveId}
         />
         {/* Static sidebar for desktop */}
-        <DesktopSidebar setParamId={setParamId} data={data ? data : []} />
+        <DesktopSidebar
+          activeId={activeId}
+          setActiveId={setActiveId}
+          setParamId={setParamId}
+          data={data ? data : []}
+        />
         <div className="lg:pl-64 flex flex-col flex-1">
           <div className="sticky top-0 z-10 flex-shrink-0 flex h-16">
             <button
@@ -310,9 +352,7 @@ export default function Admin() {
               <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
             </button>
             <div className="flex-1 p-8 flex justify-end cursor-pointer">
-              <Link href="/">
-                <h1 className="font-medium text-xl">The Orchard</h1>
-              </Link>
+              <Header />
             </div>
           </div>
           <main className="lg:ml-36">
@@ -327,13 +367,4 @@ export default function Admin() {
       </div>
     </>
   );
-
-  // return (
-  //   <main className="flex flex-col justify-center items-center gap-6 min-h-[100vh]">
-  //     <h1 className="text-2xl font-semibold">{setCorrectPhrase(new Date())}</h1>
-  //     <h1 className="text-2xl font-medium">
-  //       You currently dont have any messages
-  //     </h1>
-  //   </main>
-  // );
 }

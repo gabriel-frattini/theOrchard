@@ -138,13 +138,7 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
                         />
                       </div>
                     </Link>
-                    <div className="flex justify-center max-w-[925px] mt-4">
-                      <Link href={`rooms/${room.roomSlug}`}>
-                        <p className="flex font-medium text-lg max-w-fit  cursor-pointer border-b-2">
-                          {room.roomName}
-                        </p>
-                      </Link>
-                    </div>
+  
                   </Tab.Panel>
                 ))}
               </Tab.Panels>

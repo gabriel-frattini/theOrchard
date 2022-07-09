@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Popover, Transition } from "@headlessui/react";
 import clsx from "clsx";
 
-import { ButtonLink } from "@/components/Button";
 import { Container } from "@/components/Container";
 
 function MobileNavigation() {
@@ -98,44 +97,34 @@ function MobileNavigation() {
 
 export function Header() {
   return (
-    <header className="absolute top-8 w-full">
-      <Container>
-        <nav className="relative z-50 text-sm">
-          <ul className="flex items-center justify-end">
-            <li className="ml-12 py-3 pl-8 pr-5 rounded-l-lg hidden md:block ">
-              <Link href="#rooms">
-                <a className="text-xl font-medium text-white">
-                  Rooms
-                </a>
-              </Link>
-            </li>
-            <li className="py-3 px-5 hidden md:block ">
-              <Link href="#reviews">
-                <a className="text-xl font-medium text-white">
-                  Reviews
-                </a>
-              </Link>
-            </li>
-            <li className="py-3 px-5 hidden md:block ">
-              <Link href="#contact">
-                <a className="text-xl font-medium text-white">
-                  Contact
-                </a>
-              </Link>
-            </li>
-            <li className="py-3 pr-8 pl-5 rounded-r-lg hidden md:block ">
-              <Link href="#faq">
-                <a className="text-xl font-medium text-white">
-                  FAQ
-                </a>
-              </Link>
-            </li>
-            <li className="ml-5 -mr-1 md:hidden">
-              <MobileNavigation />
-            </li>
-          </ul>
-        </nav>
-      </Container>
-    </header>
+    <Container className="mr-6 ">
+      <nav className="relative z-50 text-sm">
+        <ul className="flex items-center justify-end">
+          <li className="ml-12 py-3 pl-8 pr-5 rounded-l-lg hidden md:block ">
+            <Link href="/admin">
+              <a className="text-xl font-medium text-black">Dashboard</a>
+            </Link>
+          </li>
+          <li className="py-3 px-5 hidden md:block ">
+            <Link replace href="/admin/rooms">
+              <a className="text-xl font-medium text-black">Rooms</a>
+            </Link>
+          </li>
+          <li className="py-3 px-5 hidden md:block ">
+            <Link replace href="/admin/reviews">
+              <a className="text-xl font-medium text-black">Reviews</a>
+            </Link>
+          </li>
+          <li className="py-3 pr-8 pl-5 rounded-r-lg hidden md:block ">
+            <Link replace href="/admin/faq">
+              <a className="text-xl font-medium text-black">FAQ</a>
+            </Link>
+          </li>
+          <li className="ml-5 -mr-1 md:hidden">
+            <MobileNavigation />
+          </li>
+        </ul>
+      </nav>
+    </Container>
   );
 }

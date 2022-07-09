@@ -5,6 +5,7 @@ import PlausibleProvider from "next-plausible";
 import Head from "next/head";
 import { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
+import NextNProgress from "nextjs-progressbar";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const description =
@@ -13,7 +14,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   const imageMetaURL = "https://roundest.t3.gg/spheal.png";
 
   return (
-    <PlausibleProvider domain="roundest.t3.gg">
+    <PlausibleProvider> 
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -53,6 +54,15 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           content="Round - Video Calls Powered By T3 Tools"
         />
       </Head>
+      <NextNProgress
+
+        color="#6366f1"
+        startPosition={0.3}
+        stopDelayMs={200}
+        height={3}
+        showOnShallow={true}
+        options={{ showSpinner: false }}
+      />
       <Component {...pageProps} />
     </PlausibleProvider>
   );

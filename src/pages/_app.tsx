@@ -1,7 +1,6 @@
 import "tailwindcss/tailwind.css";
 import "../styles/global.css";
 import type { AppProps } from "next/app";
-import PlausibleProvider from "next-plausible";
 import Head from "next/head";
 import { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
@@ -14,7 +13,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   const imageMetaURL = "https://roundest.t3.gg/spheal.png";
 
   return (
-    <PlausibleProvider> 
+    <> 
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -64,7 +63,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         options={{ showSpinner: false }}
       />
       <Component {...pageProps} />
-    </PlausibleProvider>
+    </>
   );
 };
 

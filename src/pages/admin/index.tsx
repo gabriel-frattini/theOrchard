@@ -8,6 +8,7 @@ import { setCorrectPhrase } from "@/utils/functions";
 import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
 import { router } from "@trpc/server";
+import Spinner from "@/components/Spinner";
 
 interface messageProps {
   id: number;
@@ -211,9 +212,11 @@ const DesktopSidebar = ({
   );
 };
 
-const SingleBooking: React.FC<{ deleteMsg: any; paramId: string }> = (
-  props
-) => {
+const SingleBooking: React.FC<{
+  deleteMsg: any;
+  paramId: string;
+  isDeletingMsg: boolean;
+}> = (props) => {
   const router = useRouter();
   console.log("paramid", props.paramId);
   const { data, isLoading } = trpc.useQuery([
@@ -224,18 +227,20 @@ const SingleBooking: React.FC<{ deleteMsg: any; paramId: string }> = (
   ]);
   if (isLoading) return <></>;
 
-  if (!data) return <div>no data</div>;
-
   return (
     <div className="py-6 ">
       <div className="max-w-7xl flex justify-between mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-medium text-gray-900">{data.name}</h2>
-        <XIcon
-          width={24}
-          height={24}
-          className="cursor-pointer"
-          onClick={() => props.deleteMsg(data.id)}
-        />
+        {!props.isDeletingMsg ? (
+          <XIcon
+            width={24}
+            height={24}
+            className="cursor-pointer"
+            onClick={() => props.deleteMsg(data.id)}
+          />
+        ) : (
+          <Spinner />
+        )}
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {
@@ -274,6 +279,7 @@ export default function Admin() {
   const utils = useUtils();
   const [paramId, setParamId] = useState("");
   const [activeId, setActiveId] = useState<number>();
+  const [isDeletingMsg, setIsDeletingMsg] = useState(false);
   const { data, isLoading, refetch } = trpc.useQuery(["admin.get-messages"], {
     refetchInterval: false,
     refetchOnReconnect: false,
@@ -290,13 +296,17 @@ export default function Admin() {
     });
   }, []);
 
-  const mutate = trpc.useMutation(["admin.delete-message"]);
+  const mutate = trpc.useMutation(["admin.delete-message"], {
+    onMutate() {
+      setIsDeletingMsg(true);
+    },
+  });
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const deleteMsg = (id: number) => {
     mutate.mutate(
       { id },
+
       {
         onSuccess(input) {
           const cache = utils.getQueryData(["admin.get-messages"]) ?? [];
@@ -314,26 +324,31 @@ export default function Admin() {
             setParamId(JSON.stringify(id + 1));
             window.history.replaceState({}, "", url.toString());
           }
+          setIsDeletingMsg(false);
         },
       }
     );
   };
   if (!data?.length) {
     return (
-      <main className="flex flex-col justify-center items-center gap-6 min-h-[100vh]">
-        <h1 className="text-2xl font-semibold">
-          {setCorrectPhrase(new Date())}
-        </h1>
-        <h1 className="text-2xl font-medium">
-          You currently dont have any messages
-        </h1>
-      </main>
+      <div className="pt-12">
+        <Header />
+        <main className="flex flex-col justify-center items-center gap-6 mt-36">
+          <h1 className="text-2xl font-semibold">
+            {setCorrectPhrase(new Date())}
+          </h1>
+          <h1 className="text-2xl font-medium">
+            You currently dont have any messages
+          </h1>
+        </main>
+      </div>
     );
   }
 
   return (
     <>
-      <div>
+      <div className="pt-12">
+        <Header />
         <MobileSidebar
           setSidebarOpen={setSidebarOpen}
           sidebarOpen={sidebarOpen}
@@ -359,9 +374,7 @@ export default function Admin() {
               <span className="sr-only">Open sidebar</span>
               <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
             </button>
-            <div className="flex-1 p-8 flex justify-end cursor-pointer">
-              <Header />
-            </div>
+            <div className="flex-1 p-8 flex justify-end cursor-pointer"></div>
           </div>
           <main className="lg:ml-36">
             <div className="flex justify-center my-12">
@@ -369,7 +382,11 @@ export default function Admin() {
                 {setCorrectPhrase(new Date())}
               </h1>
             </div>
-            <SingleBooking deleteMsg={deleteMsg} paramId={paramId} />
+            <SingleBooking
+              isDeletingMsg={isDeletingMsg}
+              deleteMsg={deleteMsg}
+              paramId={paramId}
+            />
           </main>
         </div>
       </div>

@@ -13,7 +13,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   const imageMetaURL = "https://roundest.t3.gg/spheal.png";
 
   return (
-    <> 
+    <>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -54,8 +54,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         />
       </Head>
       <NextNProgress
-
-        color="#6366f1"
+        color="#f43f5e"
         startPosition={0.3}
         stopDelayMs={200}
         height={3}

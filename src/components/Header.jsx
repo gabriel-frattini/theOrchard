@@ -10,7 +10,7 @@ function MobileNavigation() {
     <Popover>
       {({ open, close }) => (
         <>
-          <Popover.Button className="relative mt-8 rounded-lg bg-white/50  hover:bg-white/60 z-10 flex h-10 w-10 items-center justify-center [&:not(:focus-visible)]:focus:outline-none">
+          <Popover.Button className="relative  mt-8 rounded-lg bg-white/50  hover:bg-white/60 z-10 flex h-10 w-10 items-center justify-center [&:not(:focus-visible)]:focus:outline-none">
             <span className="sr-only">Toggle Navigation</span>
             <svg
               aria-hidden="true"
@@ -59,6 +59,13 @@ function MobileNavigation() {
                 className="absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5"
               >
                 <li>
+                  <Link replace href="/admin">
+                    <a className="block w-full" onClick={() => close()}>
+                      Dashboard
+                    </a>
+                  </Link>
+                </li>
+                <li>
                   <Link replace href="/admin/rooms">
                     <a className="block w-full" onClick={() => close()}>
                       Rooms
@@ -76,7 +83,7 @@ function MobileNavigation() {
 
 export function Header() {
   return (
-    <Container className="mr-6 ">
+    <Container className="mr-6 ml-6 ">
       <nav className="relative z-50 text-sm">
         <ul className="flex items-center justify-end">
           <li className="ml-12 py-3 pl-8 pr-5 rounded-l-lg hidden lg:block ">
@@ -90,6 +97,9 @@ export function Header() {
             </Link>
           </li>
         </ul>
+        <div className="lg:hidden flex justify-end ">
+          <MobileNavigation />
+        </div>
       </nav>
     </Container>
   );

@@ -132,7 +132,7 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
                 {props.data.map((room: roomProps, idx: number) => (
                   <Tab.Panel key={idx} unmount={false}>
                     <Link href={`rooms/${room.roomSlug}`}>
-                      <div className="relative mx-auto mt-10 aspect-[1085/730] max-w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:max-w-[57.8125rem]  hover:cursor-pointer">
+                      <div className="relative mx-auto mt-10 aspect-[1075/716] max-w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:max-w-[57.8125rem]  hover:cursor-pointer">
                         <Image
                           src={room.roomImages[0].url}
                           alt=""

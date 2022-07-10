@@ -27,7 +27,7 @@ export const AdminRouter = createRouter()
         })
       );
 
-      return { redirect: "/admin/dashboard" };
+      return { redirect: "/admin" };
     },
   })
 

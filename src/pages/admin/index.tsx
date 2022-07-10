@@ -37,6 +37,7 @@ const MobileSidebar = ({
   sidebarOpen,
   activeId,
   setActiveId,
+  setParamId,
 }: childCompsProps) => {
   return (
     <>
@@ -107,7 +108,13 @@ const MobileSidebar = ({
                           className={
                             activeId === person.id ? "bg-gray-50" : "bg-white"
                           }
-                          onClick={() => setActiveId(person.id)}
+                          onClick={() => {
+                            setActiveId(person.id);
+                            const url = new URL(window.location.href);
+                            url.search = JSON.stringify(person.id);
+                            window.history.replaceState({}, "", url.toString());
+                            setParamId(JSON.stringify(person.id));
+                          }}
                         >
                           <div className="relative px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                             <div className="flex-1 min-w-0">
@@ -333,6 +340,7 @@ export default function Admin() {
           data={data ? data : []}
           activeId={activeId}
           setActiveId={setActiveId}
+          setParamId={setParamId}
         />
         {/* Static sidebar for desktop */}
         <DesktopSidebar

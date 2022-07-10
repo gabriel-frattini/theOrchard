@@ -19,7 +19,6 @@ export const Rooms = (props: Props) => {
   const { data, isLoading, error } = trpc.useQuery(["room.get-rooms"]);
 
   if (data) {
-    console.log(data);
     return (
       <>
         <ShowRooms data={data as unknown as roomProps[]} />

@@ -67,10 +67,14 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
           >
             Our rooms.
           </h2>
-          <p className="mt-6 text-lg tracking-tight text-black">
-            Relax and enjoy the beautiful atmosphere around you. We are playing
-            a part in supporting safe travel and we want our guests to be able
-            to stay with confidence.
+          <p className="mt-6 font-display text-xl tracking-tight text-black">
+            Each room here will provide you with air conditioning and free WiFi.
+            Bath and beach towels and bed linen are provided.
+          </p>
+          <p className="text-xl font-display tracking-tight text-black">
+            Other facilities include a living area with a sofa and dining table,
+            a flat-screen cable TV, laundry facilities with a guest toilet and
+            an outdoor shower.
           </p>
         </div>
         <Tab.Group
@@ -80,8 +84,8 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
         >
           {({ selectedIndex }) => (
             <>
-              <div className="-mx-4 flex overflow-x-auto pb-4 sm:mx-0 sm:overflow-visible sm:pb-0 lg:col-span-5">
-                <Tab.List className="relative z-10 flex space-x-4 whitespace-nowrap px-4 sm:mx-auto sm:px-0 lg:mx-0 lg:block lg:space-y-1 lg:space-x-0 lg:whitespace-normal">
+              <div className=" flex pb-4 sm:mx-0  sm:pb-0 lg:col-span-5">
+                <Tab.List className="relative z-10 flex space-x-2 whitespace-nowrap  sm:mx-auto sm:px-0 lg:mx-0 lg:block lg:space-y-1 lg:space-x-0 lg:whitespace-normal">
                   {props.data.map((room: roomProps, featureIndex: number) => (
                     <div
                       key={featureIndex}
@@ -124,11 +128,11 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
                   ))}
                 </Tab.List>
               </div>
-              <Tab.Panels className="lg:col-span-7">
+              <Tab.Panels className="lg:col-span-7 ">
                 {props.data.map((room: roomProps, idx: number) => (
                   <Tab.Panel key={idx} unmount={false}>
                     <Link href={`rooms/${room.roomSlug}`}>
-                      <div className="relative mt-10 aspect-[1085/730] w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:max-w-[57.8125rem]  hover:cursor-pointer">
+                      <div className="relative mx-auto mt-10 aspect-[1085/730] max-w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:max-w-[57.8125rem]  hover:cursor-pointer">
                         <Image
                           src={room.roomImages[0].url}
                           alt=""
@@ -138,7 +142,6 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
                         />
                       </div>
                     </Link>
-  
                   </Tab.Panel>
                 ))}
               </Tab.Panels>

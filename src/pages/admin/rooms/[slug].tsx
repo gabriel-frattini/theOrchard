@@ -27,7 +27,7 @@ const AdminEdit = (props: Props) => {
   return (
     <>
       <Header />
-      <div className=" flex items-center mx-auto min-h-[100vh]  px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div className=" flex mt-[50px] items-center mx-auto min-h-[100vh]  px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start ">
           <Product handleEdit={handleEdit} room={data} isEditing={isEditing} />
         </div>

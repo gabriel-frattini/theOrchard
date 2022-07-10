@@ -22,38 +22,11 @@ interface ParentCompProps {
 
 export const Product: React.FC<ParentCompProps> = (props) => {
   const router = useRouter();
-  const [isMutating, setIsMutating] = React.useState(false);
-  const [isSaving, setIsSaving] = React.useState(false);
 
   const { data, isLoading, error } = trpc.useQuery([
     "room.get-room-by-slug",
     { roomSlug: String(router.query.slug) },
   ]);
-
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const [uploadedImage, setUploadedImage] = React.useState<any>();
-  const updateUserAvatarMutation = trpc.useMutation("admin.add-room", {
-    onSuccess: () => {
-      window.location.reload();
-      setIsSaving(false);
-    },
-    onMutate() {
-      setIsSaving(true);
-    },
-  });
-  const uploadImageMutation = useMutation((file: File) => {
-    return uploadImage(file);
-  }, {});
-
-  const deleteImgMutation = trpc.useMutation(["admin.delete-img"], {
-    onMutate() {
-      setIsMutating(true);
-    },
-    onSuccess() {
-      setIsMutating(false);
-      window.location.reload();
-    },
-  });
 
   if (isLoading) return <></>;
   if (error) console.error(error);
@@ -96,112 +69,10 @@ export const Product: React.FC<ParentCompProps> = (props) => {
         <Tab.Panels className="w-full aspect-w-1 aspect-h-1">
           {data?.room?.roomImages.map((image) => (
             <Tab.Panel key={image.id}>
-              <div className="p-4 flex gap-4 rounded-2xl w-full">
-                <div className="flex justify-center gap-2 py-3 items-center flex-1 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer">
-                  <button
-                    onClick={() =>
-                      deleteImgMutation.mutate({
-                        id: image.id,
-                      })
-                    }
-                    className="font-medium"
-                  >
-                    {isMutating ? <Spinner /> : "Delete this image"}
-                  </button>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    />
-                  </svg>
-                </div>
-                <button
-                  className="flex flex-1 py-3 rounded-lg bg-gray-100 justify-center gap-2 items-center hover:bg-gray-200 cursor-pointer"
-                  onClick={() => {
-                    fileInputRef.current?.click();
-                  }}
-                >
-                  Add new image
-                  <input
-                    ref={fileInputRef}
-                    name="user-image"
-                    type="file"
-                    accept=".jpg, .jpeg, .png, .gif"
-                    className="hidden"
-                    onChange={(event) => {
-                      const files = event.target.files;
+              {props.handleEdit && (
+                <EditImage id={image.id} roomId={data.room?.id!} />
+              )}
 
-                      if (files && files.length > 0) {
-                        const file = files[0];
-                        setUploadedImage(file);
-                      }
-                    }}
-                  />
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                </button>
-
-                {uploadedImage && (
-                  <div className="absolute min-w-[300px] flex flex-col-reverse left-[50%] z-10 translate-x-[-50%] bg-white shadow-md px-4 py-6 rounded-md border-2">
-                    <div className="flex justify-around items-center gap-4">
-                      <button
-                        className="bg-gray-100 flex-1 rounded-md py-2 mt-2"
-                        onClick={async () => {
-                          const files = fileInputRef.current?.files;
-
-                          if (files && files.length > 0) {
-                            uploadImageMutation.mutate(files[0], {
-                              onSuccess: (uploadedImage) => {
-                                updateUserAvatarMutation.mutate({
-                                  image: uploadedImage.url,
-                                  id: data?.room?.id!,
-                                });
-                              },
-                            });
-                          }
-                        }}
-                      >
-                        {isSaving ? <Spinner /> : "Save"}
-                      </button>
-                      <button
-                        className="flex-1 bg-gray-100 rounded-md py-2 mt-2"
-                        onClick={() => {
-                          fileInputRef.current!.value = "";
-                          URL.revokeObjectURL(uploadedImage);
-                          setUploadedImage(null);
-                        }}
-                      >
-                        Remove photo
-                      </button>
-                    </div>
-                    <img
-                      width={640}
-                      height={400}
-                      src={URL.createObjectURL(uploadedImage)}
-                    />
-                  </div>
-                )}
-              </div>
               <img src={image.url} alt={""} className="" />
             </Tab.Panel>
           ))}
@@ -308,3 +179,146 @@ const EditRoomDetails = (props: ParentCompProps) => {
     </div>
   );
 };
+
+interface EditImageProps<TItem> {
+  roomId: number;
+  id: number;
+}
+
+export function EditImage<TItem>(props: EditImageProps<TItem>) {
+  const [isMutating, setIsMutating] = React.useState(false);
+  const [isSaving, setIsSaving] = React.useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [uploadedImage, setUploadedImage] = React.useState<any>();
+  const updateUserAvatarMutation = trpc.useMutation("admin.add-room", {
+    onSuccess: () => {
+      window.location.reload();
+      setIsSaving(false);
+    },
+    onMutate() {
+      setIsSaving(true);
+    },
+  });
+  const uploadImageMutation = useMutation((file: File) => {
+    return uploadImage(file);
+  }, {});
+
+  const deleteImgMutation = trpc.useMutation(["admin.delete-img"], {
+    onMutate() {
+      setIsMutating(true);
+    },
+    onSuccess() {
+      setIsMutating(false);
+      window.location.reload();
+    },
+  });
+
+  return (
+    <div className="p-4 flex gap-4 rounded-2xl w-full">
+      <div className="flex justify-center gap-2 py-3 items-center flex-1 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer">
+        <button
+          onClick={() =>
+            deleteImgMutation.mutate({
+              id: props.id,
+            })
+          }
+          className="font-medium"
+        >
+          {isMutating ? <Spinner /> : "Delete this image"}
+        </button>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+          />
+        </svg>
+      </div>
+      <button
+        className="flex flex-1 py-3 rounded-lg bg-gray-100 justify-center gap-2 items-center hover:bg-gray-200 cursor-pointer"
+        onClick={() => {
+          fileInputRef.current?.click();
+        }}
+      >
+        Add new image
+        <input
+          ref={fileInputRef}
+          name="user-image"
+          type="file"
+          accept=".jpg, .jpeg, .png, .gif"
+          className="hidden"
+          onChange={(event) => {
+            const files = event.target.files;
+
+            if (files && files.length > 0) {
+              const file = files[0];
+              setUploadedImage(file);
+            }
+          }}
+        />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+      </button>
+
+      {uploadedImage && (
+        <div className="absolute min-w-[300px] flex flex-col-reverse left-[50%] z-10 translate-x-[-50%] bg-white shadow-md px-4 py-6 rounded-md border-2">
+          <div className="flex justify-around items-center gap-4">
+            <button
+              className="bg-gray-100 flex-1 rounded-md py-2 mt-2"
+              onClick={async () => {
+                const files = fileInputRef.current?.files;
+
+                if (files && files.length > 0) {
+                  uploadImageMutation.mutate(files[0], {
+                    onSuccess: (uploadedImage) => {
+                      updateUserAvatarMutation.mutate({
+                        image: uploadedImage.url,
+                        id: props.roomId,
+                      });
+                    },
+                  });
+                }
+              }}
+            >
+              {isSaving ? <Spinner /> : "Save"}
+            </button>
+            <button
+              className="flex-1 bg-gray-100 rounded-md py-2 mt-2"
+              onClick={() => {
+                fileInputRef.current!.value = "";
+                URL.revokeObjectURL(uploadedImage);
+                setUploadedImage(null);
+              }}
+            >
+              Remove photo
+            </button>
+          </div>
+          <img
+            width={640}
+            height={400}
+            src={URL.createObjectURL(uploadedImage)}
+          />
+        </div>
+      )}
+    </div>
+  );
+}

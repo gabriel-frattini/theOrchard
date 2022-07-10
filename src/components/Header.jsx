@@ -10,7 +10,7 @@ function MobileNavigation() {
     <Popover>
       {({ open, close }) => (
         <>
-          <Popover.Button className="relative rounded-lg bg-white/50  hover:bg-white/60 z-10 flex h-10 w-10 items-center justify-center [&:not(:focus-visible)]:focus:outline-none">
+          <Popover.Button className="relative mt-8 rounded-lg bg-white/50  hover:bg-white/60 z-10 flex h-10 w-10 items-center justify-center [&:not(:focus-visible)]:focus:outline-none">
             <span className="sr-only">Toggle Navigation</span>
             <svg
               aria-hidden="true"
@@ -59,30 +59,9 @@ function MobileNavigation() {
                 className="absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5"
               >
                 <li>
-                  <Link href="rooms">
+                  <Link replace href="/admin/rooms">
                     <a className="block w-full" onClick={() => close()}>
                       Rooms
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#reviews">
-                    <a className="block w-full" onClick={() => close()}>
-                      Reviews
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#contact">
-                    <a className="block w-full" onClick={() => close()}>
-                      Contact
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#faq">
-                    <a className="block w-full" onClick={() => close()}>
-                      FAQ
                     </a>
                   </Link>
                 </li>
@@ -100,28 +79,15 @@ export function Header() {
     <Container className="mr-6 ">
       <nav className="relative z-50 text-sm">
         <ul className="flex items-center justify-end">
-          <li className="ml-12 py-3 pl-8 pr-5 rounded-l-lg hidden md:block ">
+          <li className="ml-12 py-3 pl-8 pr-5 rounded-l-lg hidden lg:block ">
             <Link href="/admin">
               <a className="text-xl font-medium text-black">Dashboard</a>
             </Link>
           </li>
-          <li className="py-3 px-5 hidden md:block ">
+          <li className="py-3 px-5 hidden lg:block ">
             <Link replace href="/admin/rooms">
               <a className="text-xl font-medium text-black">Rooms</a>
             </Link>
-          </li>
-          <li className="py-3 px-5 hidden md:block ">
-            <Link replace href="/admin/reviews">
-              <a className="text-xl font-medium text-black">Reviews</a>
-            </Link>
-          </li>
-          <li className="py-3 pr-8 pl-5 rounded-r-lg hidden md:block ">
-            <Link replace href="/admin/faq">
-              <a className="text-xl font-medium text-black">FAQ</a>
-            </Link>
-          </li>
-          <li className="ml-5 -mr-1 md:hidden">
-            <MobileNavigation />
           </li>
         </ul>
       </nav>

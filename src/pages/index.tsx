@@ -24,7 +24,6 @@ const Home: React.FC<Props> = () => {
         <Hero />
         <Rooms />
         <Testimonials />
-        <Faqs />
       </main>
       <Footer />
     </>

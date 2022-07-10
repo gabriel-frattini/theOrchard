@@ -16,7 +16,7 @@ export const AdminRouter = createRouter()
         where: { passphrase: input.passphrase },
       });
       if (!admin) {
-        return { redirect: "/admin-login" };
+        return { redirect: "/login-admin" };
       }
 
       ctx.res?.setHeader(

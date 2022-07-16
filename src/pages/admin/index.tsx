@@ -230,13 +230,13 @@ const SingleBooking: React.FC<{
   return (
     <div className="py-6 ">
       <div className="max-w-7xl flex justify-between mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-medium text-gray-900">{data.name}</h2>
+        <h2 className="text-2xl font-medium text-gray-900">{data!.name}</h2>
         {!props.isDeletingMsg ? (
           <XIcon
             width={24}
             height={24}
-            className="cursor-pointer"
-            onClick={() => props.deleteMsg(data.id)}
+            className="cursor-pointer hover:bg-gray-100 rounded-full"
+            onClick={() => props.deleteMsg(data!.id)}
           />
         ) : (
           <Spinner />

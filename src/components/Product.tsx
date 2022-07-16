@@ -141,7 +141,7 @@ const EditRoomDetails = (props: ParentCompProps) => {
       <form onSubmit={handleSaveNewRoomDetails}>
         <button
           type="submit"
-          className="absolute w-[100px]  right-0 top-0 inline-flex justify-center py-2  border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
+          className="absolute w-[200px]  right-0 top-0 inline-flex justify-center py-2  border border-transparent shadow-sm font-bold text-lg rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
         >
           {isSaving ? <Spinner /> : "Save"}
         </button>
@@ -199,9 +199,16 @@ export function EditImage<TItem>(props: EditImageProps<TItem>) {
       setIsSaving(true);
     },
   });
-  const uploadImageMutation = useMutation((file: File) => {
-    return uploadImage(file);
-  }, {});
+  const uploadImageMutation = useMutation(
+    (file: File) => {
+      return uploadImage(file);
+    },
+    {
+      onMutate() {
+        setIsMutating(true);
+      },
+    }
+  );
 
   const deleteImgMutation = trpc.useMutation(["admin.delete-img"], {
     onMutate() {
@@ -217,6 +224,7 @@ export function EditImage<TItem>(props: EditImageProps<TItem>) {
     <div className="p-4 flex gap-4 rounded-2xl w-full">
       <div className="flex justify-center gap-2 py-3 items-center flex-1 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer">
         <button
+          disabled={isMutating}
           onClick={() =>
             deleteImgMutation.mutate({
               id: props.id,
@@ -283,9 +291,9 @@ export function EditImage<TItem>(props: EditImageProps<TItem>) {
 
       {uploadedImage && (
         <div className="absolute min-w-[300px] flex flex-col-reverse left-[50%] z-10 translate-x-[-50%] bg-white shadow-md px-4 py-6 rounded-md border-2">
-          <div className="flex justify-around items-center gap-4">
+          <div className=" grid grid-cols-2 items-center gap-4">
             <button
-              className="bg-gray-100 flex-1 rounded-md py-2 mt-2"
+              className="bg-gray-100 col-start-1 rounded-md py-2 px-8 mt-2 hover:bg-gray-200 "
               onClick={async () => {
                 const files = fileInputRef.current?.files;
 
@@ -296,15 +304,16 @@ export function EditImage<TItem>(props: EditImageProps<TItem>) {
                         image: uploadedImage.url,
                         id: props.roomId,
                       });
+                      setIsMutating(false);
                     },
                   });
                 }
               }}
             >
-              {isSaving ? <Spinner /> : "Save"}
+              {isSaving || isMutating ? <Spinner /> : "Save"}
             </button>
             <button
-              className="flex-1 bg-gray-100 rounded-md py-2 mt-2"
+              className="col-start-2 col-span-1  bg-gray-100 rounded-md py-2 mt-2 hover:bg-gray-200"
               onClick={() => {
                 fileInputRef.current!.value = "";
                 URL.revokeObjectURL(uploadedImage);

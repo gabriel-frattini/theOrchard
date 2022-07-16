@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import { Hero } from "@/components/Hero";
@@ -6,7 +5,6 @@ import { Contact } from "@/components/Contact";
 import { Product } from "@/components/Product";
 
 const Room: React.FC = () => {
-
   return (
     <>
       <Hero />

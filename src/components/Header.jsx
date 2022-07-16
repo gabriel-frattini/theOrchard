@@ -72,6 +72,13 @@ function MobileNavigation() {
                     </a>
                   </Link>
                 </li>
+                <li>
+                  <Link href="/" replace>
+                    <a className="block w-full" onClick={() => close()}>
+                      Home
+                    </a>
+                  </Link>
+                </li>
               </Popover.Panel>
             </Transition.Child>
           </Transition.Root>
@@ -94,6 +101,11 @@ export function Header() {
           <li className="py-3 px-5 hidden lg:block ">
             <Link replace href="/admin/rooms">
               <a className="text-xl font-medium text-black">Rooms</a>
+            </Link>
+          </li>
+          <li className="py-3 px-5 hidden lg:block ">
+            <Link replace href="/">
+              <a className="text-xl font-medium text-black">Home</a>
             </Link>
           </li>
         </ul>

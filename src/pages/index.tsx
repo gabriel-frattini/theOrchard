@@ -14,10 +14,10 @@ const Home: React.FC<Props> = () => {
   return (
     <>
       <Head>
-        <title>TaxPal - Accounting made simple for small businesses</title>
+        <title>The Orchard Holiday Home</title>
         <meta
           name="description"
-          content="Most bookkeeping software is accurate, but hard to use. We make the opposite trade-off, and hope you don’t get audited."
+          content="We want you to love where you live and to feel at home."
         />
       </Head>
       <main>

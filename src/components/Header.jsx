@@ -90,7 +90,7 @@ function MobileNavigation() {
 
 export function Header() {
   return (
-    <Container className="mr-6 ml-6 ">
+    <Container className="mr-6 ml-6 mt-12 ">
       <nav className="relative z-50 text-sm">
         <ul className="flex items-center justify-end">
           <li className="ml-12 py-3 pl-8 pr-5 rounded-l-lg hidden lg:block ">

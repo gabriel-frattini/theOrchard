@@ -218,7 +218,6 @@ const SingleBooking: React.FC<{
   isDeletingMsg: boolean;
 }> = (props) => {
   const router = useRouter();
-  console.log("paramid", props.paramId);
   const { data, isLoading } = trpc.useQuery([
     "admin.get-message-by-id",
     {
@@ -247,15 +246,15 @@ const SingleBooking: React.FC<{
           <div className="flex space-x-3">
             <div className="flex-1 space-y-1">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium  mt-4 ">{data.email}</h3>
+                <h3 className="text-lg font-medium  mt-4 ">{data!.email}</h3>
                 {/* <p className="text-lg text-gray-500">
                   Sent {props.data.createdAt.toString().split("T")[0]}
                 </p> */}
               </div>
               <p className="text-lg text-gray-600 mt-4">
-                {data.startDate} to {data.endDate}
+                {data!.startDate} to {data!.endDate}
               </p>
-              <p className="text-lg text-gray-600">{data.room}</p>
+              <p className="text-lg text-gray-600">{data!.room}</p>
             </div>
           </div>
         }
@@ -267,7 +266,7 @@ const SingleBooking: React.FC<{
           Message
         </label>
         <div className="shadow-sm block w-full h-48 p-4 sm:text-sm border-gray-200 border-2 rounded-lg">
-          <p className="text-lg">{data.message}</p>
+          <p className="text-lg">{data!.message}</p>
         </div>
       </div>
     </div>
@@ -331,7 +330,7 @@ export default function Admin() {
   };
   if (!data?.length) {
     return (
-      <div className="pt-12">
+      <div className="">
         <Header />
         <main className="flex flex-col justify-center items-center gap-6 mt-36">
           <h1 className="text-2xl font-semibold">
@@ -347,7 +346,7 @@ export default function Admin() {
 
   return (
     <>
-      <div className="pt-12">
+      <div className="">
         <Header />
         <MobileSidebar
           setSidebarOpen={setSidebarOpen}

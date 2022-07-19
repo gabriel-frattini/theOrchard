@@ -162,12 +162,12 @@ const DesktopSidebar = ({
       {/* Sidebar component, swap this element with another sidebar if you like */}
       <div className="flex flex-col flex-grow pt-5 bg-white overflow-y-auto">
         <nav
-          className="h-full overflow-y-auto border-r-2"
+          className="h-full overflow-y-auto border-r-2 z-10"
           aria-label="Directory"
         >
-          <ul role="list" className="relative z-0 divide-y divide-gray-200">
+          <ul role="list" className="relative z-10 divide-y divide-gray-200">
             {data?.map((person: messageProps, idx: number) => (
-              <div className="cursor-pointer">
+              <div className="cursor-pointer z-12">
                 <li
                   key={idx}
                   className={
@@ -217,7 +217,6 @@ const SingleBooking: React.FC<{
   paramId: string;
   isDeletingMsg: boolean;
 }> = (props) => {
-  const router = useRouter();
   const { data, isLoading } = trpc.useQuery([
     "admin.get-message-by-id",
     {
@@ -347,7 +346,7 @@ export default function Admin() {
   return (
     <>
       <div>
-        <div className="absolute top-20 z-10 h-16">
+        <div className="absolute top-[86px] left-4  z-10 h-16">
           <button
             type="button"
             className="px-4  border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
@@ -374,7 +373,7 @@ export default function Admin() {
           data={data ? data : []}
         />
         <div className="lg:pl-64 flex flex-col flex-1">
-          <main className="lg:ml-36">
+          <main className="lg:ml-36  mt-36">
             <div className="flex justify-center my-12">
               <h1 className="text-2xl font-semibold">
                 {setCorrectPhrase(new Date())}

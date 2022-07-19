@@ -167,42 +167,42 @@ const DesktopSidebar = ({
         >
           <ul role="list" className="relative z-0 divide-y divide-gray-200">
             {data?.map((person: messageProps, idx: number) => (
-              <li
-                key={idx}
-                className={
-                  activeId === person.id
-                    ? "bg-gray-50 hover:cursor-pointer"
-                    : "bg-white  hover:cursor-pointer"
-                }
-                onClick={() => {
-                  setActiveId(person.id);
-                  const url = new URL(window.location.href);
-                  url.search = JSON.stringify(person.id);
-                  window.history.replaceState({}, "", url.toString());
-                  setParamId(JSON.stringify(person.id));
-                }}
-              >
-                <div className="relative px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                  <div className="flex-1 min-w-0">
-                    <span className="absolute inset-0" aria-hidden="true" />
+              <div className="cursor-pointer">
+                <li
+                  key={idx}
+                  className={
+                    activeId === person.id
+                      ? "bg-gray-50 hover:bg-gray-50 cursor-pointer "
+                      : "bg-white cursor-pointer hover:bg-gray-50"
+                  }
+                  onClick={() => {
+                    setActiveId(person.id);
+                    const url = new URL(window.location.href);
+                    url.search = JSON.stringify(person.id);
+                    window.history.replaceState({}, "", url.toString());
+                    setParamId(JSON.stringify(person.id));
+                  }}
+                >
+                  <div className="relative px-6 py-5 flex items-center space-x-3">
+                    <div className="flex-1 min-w-0">
+                      <span className="flex justify-between">
+                        <p className="text-lg font-medium text-gray-900">
+                          {person.name}
+                        </p>
 
-                    <span className="flex justify-between">
-                      <p className="text-lg font-medium text-gray-900">
-                        {person.name}
+                        <p className="text-gray-700 text-lg">
+                          {person.createdAt.toString().split("T")[0]}
+                        </p>
+                      </span>
+                      <p className="text-lg text-gray-500">
+                        {person.message.length > 60
+                          ? `${person.message.slice(0, 60)}...`
+                          : person.message}
                       </p>
-
-                      <p className="text-gray-700 text-lg">
-                        {person.createdAt.toString().split("T")[0]}
-                      </p>
-                    </span>
-                    <p className="text-lg text-gray-500">
-                      {person.message.length > 60
-                        ? `${person.message.slice(0, 60)}...`
-                        : person.message}
-                    </p>
+                    </div>
                   </div>
-                </div>
-              </li>
+                </li>
+              </div>
             ))}
           </ul>
         </nav>
@@ -346,7 +346,17 @@ export default function Admin() {
 
   return (
     <>
-      <div className="">
+      <div>
+        <div className="absolute top-20 z-10 h-16">
+          <button
+            type="button"
+            className="px-4  border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <span className="sr-only">Open sidebar</span>
+            <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
+          </button>
+        </div>
         <Header />
         <MobileSidebar
           setSidebarOpen={setSidebarOpen}
@@ -364,17 +374,6 @@ export default function Admin() {
           data={data ? data : []}
         />
         <div className="lg:pl-64 flex flex-col flex-1">
-          <div className="sticky top-0 z-10 flex-shrink-0 flex h-16">
-            <button
-              type="button"
-              className="px-4  border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <span className="sr-only">Open sidebar</span>
-              <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
-            </button>
-            <div className="flex-1 p-8 flex justify-end cursor-pointer"></div>
-          </div>
           <main className="lg:ml-36">
             <div className="flex justify-center my-12">
               <h1 className="text-2xl font-semibold">

@@ -8,9 +8,9 @@ import NextNProgress from "nextjs-progressbar";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const description =
-    "We're here to answer the eternal question: What Pokémon is roundest?";
-  const title = "Roundest Pokémon - Public Poll";
-  const imageMetaURL = "https://roundest.t3.gg/spheal.png";
+    "The Orchard Holiday Home";
+  const title = "The Orchard Holiday Home";
+  const imageMetaURL = "https://theorchardholidayhome/spheal.png";
 
   return (
     <>
@@ -46,11 +46,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <link rel="shortcut icon" href="/favicon.ico?v=2" />
         <meta
           name="apple-mobile-web-app-title"
-          content="Round - Video Calls Powered By T3 Tools"
+          content="The Orchard Holiday Home"
         />
         <meta
           name="application-name"
-          content="Round - Video Calls Powered By T3 Tools"
+          content="The Orchard Holiday Home"
         />
       </Head>
       <NextNProgress

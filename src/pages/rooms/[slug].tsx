@@ -6,14 +6,14 @@ import { Product } from "@/components/Product";
 
 const Room: React.FC = () => {
   return (
-    <>
+    <div className="min-w-[600px]">
       <Hero />
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
           <Product childComp={<Contact />} />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

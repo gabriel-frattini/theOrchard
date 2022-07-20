@@ -2,8 +2,10 @@ import { MailIcon, PhoneIcon } from "@heroicons/react/outline";
 import { trpc } from "@/utils/trpc";
 import * as React from "react";
 import { useRouter } from "next/router";
+import Spinner from "./Spinner";
 
 export function Contact() {
+  const [loading, setLoading] = React.useState(false);
   const mutation = trpc.useMutation(["booking.create-booking"]);
   const [sentMessage, setSentMessage] = React.useState(false);
   const router = useRouter();
@@ -17,6 +19,7 @@ export function Contact() {
   }, []);
 
   const useContactForm = (e: any) => {
+    setLoading(true);
     e.preventDefault();
     const name: HTMLInputElement = e.target.elements.name;
     const email: HTMLInputElement = e.target.elements.email;
@@ -41,6 +44,7 @@ export function Contact() {
           url.hash = "#success";
           router.push(url.href);
           router.reload();
+          setLoading(false);
         },
       }
     );
@@ -129,9 +133,9 @@ export function Contact() {
             <button
               disabled={mutation.isLoading}
               type="submit"
-              className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="inline-flex justify-center  py-2 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600"
             >
-              Submit
+              {loading ? <Spinner /> : "Submit"}
             </button>
           </div>
           {sentMessage && (

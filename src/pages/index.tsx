@@ -12,7 +12,7 @@ interface Props {}
 
 const Home: React.FC<Props> = () => {
   return (
-    <>
+    <body className="min-w-[600px]">
       <Head>
         <title>The Orchard Holiday Home</title>
         <meta
@@ -26,7 +26,7 @@ const Home: React.FC<Props> = () => {
         <Testimonials />
       </main>
       <Footer />
-    </>
+    </body>
   );
 };
 

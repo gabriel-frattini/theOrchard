@@ -83,7 +83,7 @@ const MobileSidebar = ({
                   <div className="absolute top-0 right-0 -mr-12 pt-2">
                     <button
                       type="button"
-                      className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                      className="ml-1 flex items-center justify-center h-10 w-10 rounded-full"
                       onClick={() => setSidebarOpen(false)}
                     >
                       <span className="sr-only">Close sidebar</span>
@@ -107,7 +107,9 @@ const MobileSidebar = ({
                         <li
                           key={idx}
                           className={
-                            activeId === person.id ? "bg-gray-50" : "bg-white"
+                            activeId === person.id
+                              ? "bg-gray-50 cursor-pointer"
+                              : "bg-white cursor-pointer"
                           }
                           onClick={() => {
                             setActiveId(person.id);
@@ -178,6 +180,7 @@ const DesktopSidebar = ({
                   onClick={() => {
                     setActiveId(person.id);
                     const url = new URL(window.location.href);
+
                     url.search = JSON.stringify(person.id);
                     window.history.replaceState({}, "", url.toString());
                     setParamId(JSON.stringify(person.id));
@@ -223,7 +226,7 @@ const SingleBooking: React.FC<{
       id: parseInt(props.paramId),
     },
   ]);
-  if (isLoading) return <></>;
+  if (isLoading || !data) return <></>;
 
   return (
     <div className="py-6 ">
@@ -346,7 +349,7 @@ export default function Admin() {
   return (
     <>
       <div>
-        <div className="absolute top-[86px] left-4  z-10 h-16">
+        <div className="absolute top-[88px] left-4  z-10 h-16">
           <button
             type="button"
             className="px-4  border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"

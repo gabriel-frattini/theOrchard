@@ -4,7 +4,7 @@ import clsx from "clsx";
 export default function Document(props) {
   return (
     <Html
-      className="h-full scroll-smooth min-w-full bg-white antialiased [font-feature-settings:'ss01']"
+      className="h-full scroll-smooth min-w-full bg-white antialiased[font-feature-settings:'ss01']"
       lang="en"
     >
       <Head>
@@ -19,7 +19,7 @@ export default function Document(props) {
           href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@400;500&display=swap"
         />
       </Head>
-      <body className="min-w-[300px] h-full ">
+      <body className=" h-full ">
         <Main />
         <NextScript />
       </body>

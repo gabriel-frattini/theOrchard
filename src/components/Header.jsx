@@ -56,7 +56,7 @@ function MobileNavigation() {
             >
               <Popover.Panel
                 as="ul"
-                className="absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5"
+                className="absolute right-2 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5"
               >
                 <li>
                   <Link replace href="/admin">

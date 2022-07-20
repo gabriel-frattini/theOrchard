@@ -30,6 +30,9 @@ module.exports = {
       maxWidth: {
         "2xl": "40rem",
       },
+      screens: {
+        "hover-hover": { raw: "(hover: hover)" },
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],

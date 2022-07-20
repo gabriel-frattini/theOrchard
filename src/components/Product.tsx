@@ -40,7 +40,7 @@ export const Product: React.FC<ParentCompProps> = (props) => {
             {data?.room?.roomImages.map((image) => (
               <Tab
                 key={image.id}
-                className="relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring focus:ring-offset-4 focus:ring-opacity-50"
+                className="relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-display uppercase text-gray-900 cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring focus:ring-offset-4 focus:ring-opacity-50"
               >
                 {({ selected }) => (
                   <>
@@ -54,7 +54,7 @@ export const Product: React.FC<ParentCompProps> = (props) => {
                     </span>
                     <span
                       className={classNames(
-                        selected ? "ring-indigo-500" : "ring-transparent",
+                        selected ? "ring-rose-500" : "ring-transparent",
                         "absolute inset-0 rounded-md ring-2 ring-offset-2 pointer-events-none"
                       )}
                       aria-hidden="true"
@@ -93,16 +93,16 @@ export const Product: React.FC<ParentCompProps> = (props) => {
 const RoomDetails = (props: ParentCompProps) => {
   return (
     <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 relative">
-      <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
+      <h1 className="text-3xl font-display tracking-tight text-gray-900">
         {props?.room.roomName}
       </h1>
       <div className="mt-3">
         <h2 className="sr-only">Product information</h2>
-        <p className="text-3xl text-gray-900">{props.room.roomPrice}</p>
+        <p className="text-3xl text-gray-900">£{props.room.roomPrice}</p>
       </div>
       <div className="mt-6">
         <div
-          className="text-base text-gray-700 space-y-6 mb-12"
+          className="text-base font-display text-gray-700 space-y-6 mb-12"
           dangerouslySetInnerHTML={{ __html: props.room.roomDescription }}
         />
       </div>
@@ -156,6 +156,7 @@ const EditRoomDetails = (props: ParentCompProps) => {
       </h1>
       <div className="mt-3">
         <h2 className="sr-only">Product information</h2>
+        <span className="text-3xl">£</span>
         <input
           type="text"
           value={roomPrice}
@@ -230,7 +231,7 @@ export function EditImage<TItem>(props: EditImageProps<TItem>) {
               id: props.id,
             })
           }
-          className="font-medium"
+          className="font-display"
         >
           {isMutating ? <Spinner /> : "Delete this image"}
         </button>

@@ -119,13 +119,13 @@ const MobileSidebar = ({
                             setParamId(JSON.stringify(person.id));
                           }}
                         >
-                          <div className="relative px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                          <div className="relative px-6 py-5 flex items-center space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-rose-500">
                             <div className="flex-1 min-w-0">
                               <span
                                 className="absolute inset-0"
                                 aria-hidden="true"
                               />
-                              <p className="text-lg font-medium text-gray-900">
+                              <p className="text-lg font-display text-gray-900">
                                 {person.name}
                               </p>
                               <p className="text-lg text-gray-500 truncate">
@@ -189,7 +189,7 @@ const DesktopSidebar = ({
                   <div className="relative px-6 py-5 flex items-center space-x-3">
                     <div className="flex-1 min-w-0">
                       <span className="flex justify-between">
-                        <p className="text-lg font-medium text-gray-900">
+                        <p className="text-lg font-display text-gray-900">
                           {person.name}
                         </p>
 
@@ -231,7 +231,7 @@ const SingleBooking: React.FC<{
   return (
     <div className="py-6 ">
       <div className="max-w-7xl flex justify-between mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-medium text-gray-900">{data!.name}</h2>
+        <h2 className="text-2xl font-display text-gray-900">{data!.name}</h2>
         {!props.isDeletingMsg ? (
           <XIcon
             width={24}
@@ -248,7 +248,7 @@ const SingleBooking: React.FC<{
           <div className="flex space-x-3">
             <div className="flex-1 space-y-1">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium  mt-4 ">{data!.email}</h3>
+                <h3 className="text-lg font-display  mt-4 ">{data!.email}</h3>
                 {/* <p className="text-lg text-gray-500">
                   Sent {props.data.createdAt.toString().split("T")[0]}
                 </p> */}
@@ -263,7 +263,7 @@ const SingleBooking: React.FC<{
 
         <label
           htmlFor="comment"
-          className="block text-lg font-medium text-gray-700 my-4"
+          className="block text-lg font-display text-gray-700 my-4"
         >
           Message
         </label>
@@ -338,7 +338,7 @@ export default function Admin() {
           <h1 className="text-2xl font-semibold">
             {setCorrectPhrase(new Date())}
           </h1>
-          <h1 className="text-2xl font-medium">
+          <h1 className="text-2xl font-display">
             You currently dont have any messages
           </h1>
         </main>
@@ -352,7 +352,7 @@ export default function Admin() {
         <div className="absolute top-[88px] left-5  z-10 h-16">
           <button
             type="button"
-            className="px-4  border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
+            className="px-4  border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-rose-500 lg:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <span className="sr-only">Open sidebar</span>

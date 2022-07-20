@@ -12,7 +12,7 @@ export function Hero() {
         <div className="absolute top-0 left-1/2 -z-10 h-full w-full -translate-x-1/2 rounded-xl brightness-50">
           <Image src={header} layout="fill" objectFit="cover" />
         </div>
-        <h1 className="mx-auto mt-28 font-display text-xl sm:text-4xl font-medium tracking-tight text-slate-900 ">
+        <h1 className="mx-auto mt-28 font-display text-xl sm:text-4xl font-display tracking-tight text-slate-900 ">
           <Link href="/" replace>
             <div className="cursor-pointer hover:brightness-150">
               <span className="relative whitespace-nowrap text-white">
@@ -32,7 +32,7 @@ export function Hero() {
             </div>
           </Link>
         </h1>
-        <p className="mx-auto mt-12 max-w-2xl text-xl sm:text-2xl tracking-tight text-white font-medium">
+        <p className="mx-auto mt-12 max-w-2xl text-xl sm:text-2xl tracking-tight text-white font-display">
           We want you to love where you live and to feel at home.
         </p>
 

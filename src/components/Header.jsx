@@ -95,17 +95,17 @@ export function Header() {
         <ul className="flex items-center justify-end">
           <li className="ml-12 py-3 pl-8 pr-5 rounded-l-lg hidden lg:block ">
             <Link href="/admin">
-              <a className="text-xl font-medium text-black">Dashboard</a>
+              <a className="text-xl font-display text-black">Dashboard</a>
             </Link>
           </li>
           <li className="py-3 px-5 hidden lg:block ">
             <Link replace href="/admin/rooms">
-              <a className="text-xl font-medium text-black">Rooms</a>
+              <a className="text-xl font-display text-black">Rooms</a>
             </Link>
           </li>
           <li className="py-3 px-5 hidden lg:block ">
             <Link replace href="/">
-              <a className="text-xl font-medium text-black">Home</a>
+              <a className="text-xl font-display text-black">Home</a>
             </Link>
           </li>
         </ul>

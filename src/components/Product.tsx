@@ -98,7 +98,8 @@ const RoomDetails = (props: ParentCompProps) => {
       </h1>
       <div className="mt-3">
         <h2 className="sr-only">Product information</h2>
-        <p className="text-3xl text-gray-900">£{props.room.roomPrice}</p>
+        <span className="text-3xl text-gray-900">£{props.room.roomPrice}</span>
+        <span className="text-xl text-gray-600 font-display ">/night</span>
       </div>
       <div className="mt-6">
         <div

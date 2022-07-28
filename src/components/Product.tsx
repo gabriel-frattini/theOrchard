@@ -7,7 +7,6 @@ import { uploadImage } from "@/utils/cloudinary";
 import { useMutation } from "react-query";
 import Image from "next/image";
 import Spinner from "./Spinner";
-import { SP } from "next/dist/shared/lib/utils";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -139,30 +138,28 @@ const EditRoomDetails = (props: ParentCompProps) => {
 
   return (
     <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 relative">
-      <form onSubmit={handleSaveNewRoomDetails}>
+      <form onSubmit={handleSaveNewRoomDetails} className="">
         <button
           type="submit"
-          className="absolute w-[200px]  right-0 top-0 inline-flex justify-center py-2  border border-transparent shadow-sm font-bold text-lg rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
+          className="sm:absolute sm:w-[200px] w-full right-0 top-0 inline-flex justify-center py-2  border border-transparent shadow-sm font-bold text-lg rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
         >
           {isSaving ? <Spinner /> : "Save"}
         </button>
       </form>
-      <h1 className="">
-        <input
-          value={roomName}
-          onChange={(e) => setRoomName(e.target.value)}
-          className="text-3xl font-extrabold tracking-tight text-gray-900 placeholder-gray-900 border-none"
-          type="text"
-        />
-      </h1>
-      <div className="mt-3">
+      <input
+        value={roomName}
+        onChange={(e) => setRoomName(e.target.value)}
+        className="text-3xl font-extrabold tracking-tight text-gray-900 placeholder-gray-900 border-none w-full  p-0 pt-4 sm:p-[120x] "
+        type="text"
+      />
+      <div className="mt-3 flex items-center">
         <h2 className="sr-only">Product information</h2>
         <span className="text-3xl">£</span>
         <input
           type="text"
           value={roomPrice}
           onChange={(e) => setRoomPrice(e.target.value)}
-          className="text-3xl placeholder-gray-900 text-gray-900 border-none"
+          className="text-3xl placeholder-gray-900 text-gray-900 border-none w-full"
         />
       </div>
       <div className="mt-6">
@@ -174,7 +171,7 @@ const EditRoomDetails = (props: ParentCompProps) => {
           cols={50}
           value={roomDesc}
           onChange={(e) => setRoomDesc(e.target.value)}
-          className="placeholder-text-gray-700 border-none"
+          className="placeholder-text-gray-700 border-none w-full"
         />
       </div>
       {props.childComp}

@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import { Tab } from "@headlessui/react";
-import { PencilIcon } from "@heroicons/react/solid";
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
 import { uploadImage } from "@/utils/cloudinary";
@@ -32,7 +31,7 @@ export const Product: React.FC<ParentCompProps> = (props) => {
 
   return (
     <>
-      <Tab.Group as="div" className="flex flex-col-reverse">
+      <Tab.Group as="div" className="flex flex-col-reverse sm:min-w-[600px]">
         {/* Image selector */}
         <div className="hidden mt-6  w-full max-w-2xl mx-auto sm:block lg:max-w-none">
           <Tab.List className="grid grid-cols-4 gap-6">
@@ -72,7 +71,7 @@ export const Product: React.FC<ParentCompProps> = (props) => {
                 <EditImage id={image.id} roomId={data.room?.id!} />
               )}
 
-              <img src={image.url} alt={""} className="" />
+              <img src={image.url} alt={""} className="max-h-[400px] mx-auto" />
             </Tab.Panel>
           ))}
         </Tab.Panels>

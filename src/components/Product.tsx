@@ -229,7 +229,7 @@ export function EditImage<TItem>(props: EditImageProps<TItem>) {
               id: props.id,
             })
           }
-          className="font-display"
+          className="font-display text-sm sm:text-md"
         >
           {isMutating ? <Spinner /> : "Delete this image"}
         </button>
@@ -251,7 +251,7 @@ export function EditImage<TItem>(props: EditImageProps<TItem>) {
         )}
       </div>
       <button
-        className="flex flex-1 py-3 rounded-lg bg-gray-100 justify-center gap-2 items-center hover:bg-gray-200 cursor-pointer"
+        className="flex flex-1 py-3 rounded-lg bg-gray-100 justify-center gap-2 items-center hover:bg-gray-200 cursor-pointer text-sm sm:text-md font-display"
         onClick={() => {
           fileInputRef.current?.click();
         }}
@@ -289,7 +289,7 @@ export function EditImage<TItem>(props: EditImageProps<TItem>) {
       </button>
 
       {uploadedImage && (
-        <div className="absolute min-w-[300px] flex flex-col-reverse left-[50%] z-10 translate-x-[-50%] bg-white shadow-md px-4 py-6 rounded-md border-2">
+        <div className="absolute min-w-[300px] aspect-w-1 aspect-h-1  flex flex-col-reverse left-[50%] z-10 translate-x-[-50%] bg-white shadow-md px-4 py-6 rounded-md border-2">
           <div className=" grid grid-cols-2 items-center gap-4">
             <button
               className="bg-gray-100 col-start-1 rounded-md py-2 px-8 mt-2 hover:bg-gray-200 "

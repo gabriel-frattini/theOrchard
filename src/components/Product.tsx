@@ -64,19 +64,16 @@ export const Product: React.FC<ParentCompProps> = (props) => {
           </Tab.List>
         </div>
 
-        <Tab.Panels className="w-full">
+        <Tab.Panels className="max-w-[700px]">
           {data?.room?.roomImages.map((image) => (
             <Tab.Panel key={image.id}>
               {props.handleEdit && (
                 <EditImage id={image.id} roomId={data.room?.id!} />
               )}
-
-              <Image
+              <img
                 src={image.url}
                 alt={""}
-                width={700}
-                height={500}
-                objectFit="contain"
+                className="rounded-lg object-contain max-h-[400px] mx-auto"
               />
             </Tab.Panel>
           ))}

@@ -31,7 +31,7 @@ export const Product: React.FC<ParentCompProps> = (props) => {
 
   return (
     <>
-      <Tab.Group as="div" className="flex flex-col-reverse sm:min-w-[600px]">
+      <Tab.Group as="div" className="flex flex-col-reverse">
         {/* Image selector */}
         <div className="hidden mt-6  w-full max-w-2xl mx-auto sm:block lg:max-w-none">
           <Tab.List className="grid grid-cols-4 gap-6">
@@ -64,14 +64,20 @@ export const Product: React.FC<ParentCompProps> = (props) => {
           </Tab.List>
         </div>
 
-        <Tab.Panels className="w-full aspect-w-1 aspect-h-1">
+        <Tab.Panels className="w-full">
           {data?.room?.roomImages.map((image) => (
             <Tab.Panel key={image.id}>
               {props.handleEdit && (
                 <EditImage id={image.id} roomId={data.room?.id!} />
               )}
 
-              <img src={image.url} alt={""} className="max-h-[400px] mx-auto" />
+              <Image
+                src={image.url}
+                alt={""}
+                width={700}
+                height={500}
+                objectFit="contain"
+              />
             </Tab.Panel>
           ))}
         </Tab.Panels>

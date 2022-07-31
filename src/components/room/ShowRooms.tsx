@@ -84,7 +84,7 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
         >
           {({ selectedIndex }) => (
             <>
-              <div className=" flex pb-4 sm:mx-0  sm:pb-0 lg:col-span-5">
+              <div className="flex pb-4 lg:pr-12 2xl:p-0  sm:pb-0 lg:col-span-5">
                 <Tab.List className="relative z-10 flex space-x-2 whitespace-nowrap  sm:mx-auto sm:px-0 lg:mx-0 lg:block lg:space-y-1 lg:space-x-0 lg:whitespace-normal">
                   {props.data.map((room: roomProps, featureIndex: number) => (
                     <div
@@ -132,7 +132,7 @@ export const ShowRooms: React.FC<ParentCompProps> = (props) => {
                 {props.data.map((room: roomProps, idx: number) => (
                   <Tab.Panel key={idx} unmount={false}>
                     <Link href={`rooms/${room.roomSlug}`}>
-                      <div className="relative mx-auto mt-10 aspect-[1000/667.5] max-w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-lg shadow-gray-900/20 sm:w-auto lg:mt-0 lg:max-w-[50.8125rem]  hover:cursor-pointer hover-hover:scale-105 ease-in duration-300 hover:shadow-2xl hover:shadow-gray-900/30">
+                      <div className="relative mx-auto mt-10 aspect-[1000/667.5] max-w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-lg shadow-gray-900/20 sm:w-auto lg:mt-0 lg:max-w-[50.8125rem]  hover:cursor-pointer ease-in duration-300 hover:shadow-2xl hover:shadow-gray-900/30">
                         <Image
                           src={room.roomImages[0].url}
                           alt=""

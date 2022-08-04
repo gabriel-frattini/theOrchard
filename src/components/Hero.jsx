@@ -36,11 +36,12 @@ export function Hero() {
           We want you to love where you live and to feel at home.
         </p>
 
-        <div className="mt-36 lg:mt-48 flex align-center justify-center">
-          <p className="font-display text-lg text-white">
-            Barbarons, Grand Anse, Seychellerna{" "}
-          </p>
-
+        <div className="mt-36 lg:mt-48 flex align-center justify-center cursor-pointer">
+          <Link href="https://www.google.com/maps/place/The+Orchard+Holiday+Home/@-4.6903364,55.4615672,17z/data=!3m1!4b1!4m8!3m7!1s0x22e02a58aabe6c17:0xc0b784e92bc66a40!5m2!4m1!1i2!8m2!3d-4.6902369!4d55.4636991">
+            <p className="font-display text-lg text-white">
+              Barbarons, Grand Anse, Seychellerna{" "}
+            </p>
+          </Link>
           <Image src={location} alt="Transistor" layout="fixed" unoptimized />
         </div>
       </Container>

@@ -15,15 +15,65 @@ interface roomProps {
   roomImages: any;
 }
 
-export const Rooms = (props: Props) => {
-  const { data, isLoading, error } = trpc.useQuery(["room.get-rooms"]);
+let data = {
+  data: [
+    {
+      roomName: "Deluxe Room",
+      roomSlug: "deluxe-room",
+      roomPrice: 100,
+      roomDescription:
+        "A room with a double bed, your own bathroom and a lovely view over the ocean.",
+      roomImages: [
+        {
+          url: "https://res.cloudinary.com/daaqbxnj6/image/upload/v1656766250/theOrchard/deluxeroom_k34ji5.jpg",
+        },
+      ],
+    },
+    {
+      roomName: "King Room",
+      roomSlug: "king-room",
+      roomPrice: 100,
+      roomDescription:
+        "A room with a double bed, your own bathroom and a lovely view over the ocean.",
+      roomImages: [
+        {
+          url: "https://res.cloudinary.com/daaqbxnj6/image/upload/v1656766250/theOrchard/deluxeroom_k34ji5.jpg",
+        },
+      ],
+    },
+    {
+      roomName: "Queen Room",
+      roomSlug: "queen-room",
+      roomPrice: 100,
+      roomDescription:
+        "A room with a double bed, your own bathroom and a lovely view over the ocean.",
+      roomImages: [
+        {
+          url: "https://res.cloudinary.com/daaqbxnj6/image/upload/v1656766250/theOrchard/deluxeroom_k34ji5.jpg",
+        },
+      ],
+    },
+    {
+      roomName: "Twin Room",
+      roomSlug: "twin-room",
+      roomPrice: 100,
+      roomDescription:
+        "A room with a double bed, your own bathroom and a lovely view over the ocean.",
+      roomImages: [
+        {
+          url: "https://res.cloudinary.com/daaqbxnj6/image/upload/v1656766250/theOrchard/deluxeroom_k34ji5.jpg",
+        },
+      ],
+    },
+  ],
+};
 
-  if (data) {
-    return (
-      <>
-        <ShowRooms data={data as unknown as roomProps[]} />
-      </>
-    );
-  }
-  return <></>;
+export const Rooms = (props: Props) => {
+  // const { data: t, isLoading, error } = trpc.useQuery(["room.get-rooms"]);
+  // console.log(t);
+  return (
+    <>
+      <ShowRooms data={data.data as unknown as roomProps[]} />
+    </>
+  );
 };

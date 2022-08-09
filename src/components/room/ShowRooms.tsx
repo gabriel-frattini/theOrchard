@@ -27,7 +27,6 @@ interface roomProps {
 
 export const ShowRooms: React.FC<ParentCompProps> = (props) => {
   const utils = useUtils();
-
   useEffect(() => {
     props.data.forEach((room) =>
       utils.prefetchQuery([

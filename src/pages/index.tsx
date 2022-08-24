@@ -1,9 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import { CallToAction } from "@/components/CallToAction";
-import { Faqs } from "@/components/Faqs";
 import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Testimonials } from "@/components/Testimonials";
 
@@ -26,7 +23,7 @@ export async function getStaticProps(
     ctx,
   });
 
-  const data = await ssg.fetchQuery("room.get-rooms");
+  await ssg.fetchQuery("room.get-rooms");
   return {
     props: {
       trpcState: ssg.dehydrate(),

@@ -57,7 +57,12 @@ npx prisma db push
 
 ### Configure Cloudinary
 
-- [Configuring cloudinary](https://cloudinary.com/)
+- Get your api key, api secret and cloud name from [cloudinary](https://cloudinary.com/)
+```bash
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
 
 ## Running the app locally
 

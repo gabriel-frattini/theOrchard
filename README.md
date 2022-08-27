@@ -1,9 +1,14 @@
+## Table of contents 📜
+
+- <a href="#showcase">Showcase</a>
+- <a href="#setup">Setup</a>
+
 
 <div align="center">
-<h2 align="center">The Orchard Holiday Home &#127796;</h2>
+<h2 id="showcase" >The Orchard Holiday Home &#127796;</h2>
 <img src="https://github.com/gabriel-frattini/theOrchard/blob/main/src/images/showcase/theorchard.jpg" width="720" height="400" />
-
-
+</div>
+<div align="center">
 <h2 align="center">Admin Panel &#128272;</h2>
 
 <img src="https://github.com/gabriel-frattini/theOrchard/blob/main/src/images/showcase/admin_index.jpg" width="720" height="400" object-fit="contain"/>
@@ -18,7 +23,7 @@
 </div>
 </div>
 
-## Setup
+<h2 id="setup" >Setup</h2>
 
 ### Clone the repo
 
@@ -50,11 +55,9 @@ cp .env.example .env
 npx prisma db push
 ```
 
-### Configure authentication
+### Configure Cloudinary
 
-- [Configuring GitHub authentication](doc/github_setup.md)
-
-Sideclub uses [NextAuth.js](https://next-auth.js.org/), so if you prefer to use one of the [many providers](https://next-auth.js.org/providers/) it supports, you can customize your own installation. Simply update the [`lib/auth.ts`](/lib/auth.ts#L11) file to add your own provider.
+- [Configuring cloudinary](https://cloudinary.com/)
 
 ## Running the app locally
 
@@ -63,8 +66,6 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### Authenticating with GitHub
 
 ## Deploying to Vercel
 

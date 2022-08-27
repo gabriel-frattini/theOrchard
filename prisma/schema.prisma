@@ -22,7 +22,7 @@ model Booking {
   startDate String?
   endDate   String?
   room      String?
-  message   String
+  message   String @db.VarChar(400)
 }
 
 model User {

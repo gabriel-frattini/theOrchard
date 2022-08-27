@@ -4,6 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
+package-lock.json
+
+# migrations
+/prisma/migrations
 
 # testing
 /coverage

@@ -36,11 +36,10 @@ export default async function handler(
       .json({ message: `Method ${req.method} Not Allowed` });
   }
 
-  // const session = await getServerSession({ req, res });
-
-  // if (!session) {
-  //   return res.status(401).json({ message: "Unauthorized" });
-  // }
+  const token = req.cookies["admin-token"];
+  if (!token || token !== process.env.ADMIN_TOKEN) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
   const timestamp = Math.round(new Date().getTime() / 1000);
   const signature = cloudinary.utils.api_sign_request(

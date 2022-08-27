@@ -1,12 +1,9 @@
 import React from "react";
 import Head from "next/head";
-import Link from "next/link";
 
 import { AuthLayout } from "@/components/AuthLayout";
-import { Input } from "@/components/Input";
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
-import { setCookies } from "cookies-next";
 
 interface Props {}
 

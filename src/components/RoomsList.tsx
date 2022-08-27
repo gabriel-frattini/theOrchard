@@ -6,29 +6,17 @@ import Link from "next/link";
 
 import { Container } from "@/components/Container";
 import { useUtils } from "@/utils/trpc";
+import type { roomProps } from "@/utils/types";
 
-interface ParentCompProps {
+interface Props {
   childComp?: React.ReactNode;
-  data: unknown;
+  data: roomProps[];
 }
 
-interface imageProp {
-  url: string;
-}
-
-interface roomProps {
-  id: number;
-  roomName: string;
-  roomSlug: string;
-  roomPrice: number;
-  roomDescription: string;
-  roomImages: imageProp[];
-}
-
-export const ShowRooms: React.FC<ParentCompProps> = (props) => {
+export const RoomsList: React.FC<Props> = (props) => {
   const utils = useUtils();
   useEffect(() => {
-    (props.data as roomProps[]).forEach((room) =>
+    props.data.forEach((room) =>
       utils.prefetchQuery([
         "room.get-room-by-slug",
         { roomSlug: room.roomSlug },

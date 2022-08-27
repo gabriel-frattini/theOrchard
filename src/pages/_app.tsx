@@ -10,7 +10,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   const description =
     "The Orchard Holiday Home";
   const title = "The Orchard Holiday Home";
-  const imageMetaURL = "https://theorchardholidayhome/spheal.png";
+  const imageMetaURL = "https://theorchardholidayhome/logo.png";
 
   return (
     <>

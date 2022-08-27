@@ -1,25 +1,23 @@
 import React, { ReactNode } from "react";
 import { Tab } from "@headlessui/react";
 import { trpc } from "@/utils/trpc";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { uploadImage } from "@/utils/cloudinary";
 import { useMutation } from "react-query";
-import Image from "next/image";
 import Spinner from "./Spinner";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-interface ParentCompProps {
-  childComp?: JSX.Element;
+interface Props {
+  children?: JSX.Element;
   handleEdit?: () => void;
   isEditing?: Boolean;
   room?: any;
-  router?: NextRouter;
 }
 
-export const Product: React.FC<ParentCompProps> = (props) => {
+export const Room: React.FC<Props> = (props) => {
   const router = useRouter();
 
   const { data, isLoading, error } = trpc.useQuery([
@@ -81,22 +79,18 @@ export const Product: React.FC<ParentCompProps> = (props) => {
         </Tab.Panels>
       </Tab.Group>
       {props.handleEdit ? (
-        <EditRoomDetails
-          handleEdit={props.handleEdit}
-          room={props.room.room}
-          router={router}
-        />
+        <EditRoomDetails handleEdit={props.handleEdit} room={props.room.room} />
       ) : (
         <div>
           <RoomDetails room={data?.room} />
-          {props.childComp}
+          {props.children}
         </div>
       )}
     </>
   );
 };
 
-const RoomDetails = (props: ParentCompProps) => {
+const RoomDetails = (props: Props) => {
   return (
     <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 relative">
       <h1 className="text-3xl font-display tracking-tight text-gray-900">
@@ -113,12 +107,12 @@ const RoomDetails = (props: ParentCompProps) => {
           dangerouslySetInnerHTML={{ __html: props.room.roomDescription }}
         />
       </div>
-      {props.childComp}
+      {props.children}
     </div>
   );
 };
 
-const EditRoomDetails = (props: ParentCompProps) => {
+const EditRoomDetails = (props: Props) => {
   const [roomName, setRoomName] = React.useState<string>(props.room.roomName);
   const [roomPrice, setRoomPrice] = React.useState<any>(props.room.roomPrice);
   const [isSaving, setIsSaving] = React.useState(false);
@@ -180,17 +174,17 @@ const EditRoomDetails = (props: ParentCompProps) => {
           className="placeholder-text-gray-700 border-none w-full"
         />
       </div>
-      {props.childComp}
+      {props.children}
     </div>
   );
 };
 
-interface EditImageProps<TItem> {
+interface EditImageProps {
   roomId: number;
   id: number;
 }
 
-export function EditImage<TItem>(props: EditImageProps<TItem>) {
+export function EditImage(props: EditImageProps) {
   const [isMutating, setIsMutating] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);

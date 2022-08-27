@@ -1,18 +1,19 @@
-import React from "react";
-import Head from "next/head";
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
 import { Testimonials } from "@/components/Testimonials";
+import { RoomsList } from "../components/RoomsList";
 
-interface Props {}
-
-import { ShowRooms } from "../components/room/ShowRooms";
-
+import Head from "next/head";
 import { createSSGHelpers } from "@trpc/react/ssg";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+
 import { appRouter } from "@/backend/router";
-import { trpc } from "@/utils/trpc";
 import { createContext } from "@/backend/router/context";
+import { trpc } from "@/utils/trpc";
+
+import type { roomProps } from "@/utils/types";
+
+interface Props {}
 
 export async function getStaticProps(
   context: GetStaticPropsContext<{ id: string }>
@@ -46,8 +47,7 @@ const Home = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
       </Head>
       <main>
         <Hero />
-
-        {!isLoading && <ShowRooms data={data} />}
+        {!isLoading && <RoomsList data={data as roomProps[]} />}
         <Testimonials />
       </main>
       <Footer />

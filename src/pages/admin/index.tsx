@@ -1,13 +1,10 @@
 import { Fragment, useEffect, useState } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { MenuAlt2Icon, XIcon } from "@heroicons/react/outline";
 
 import { trpc, useUtils } from "@/utils/trpc";
-import Link from "next/link";
 import { setCorrectPhrase } from "@/utils/functions";
-import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
-import { router } from "@trpc/server";
 import Spinner from "@/components/Spinner";
 
 interface messageProps {
@@ -21,7 +18,7 @@ interface messageProps {
   createdAt: Date;
 }
 
-interface childCompsProps {
+interface Props {
   data: messageProps[] | any;
   setSidebarOpen?: any;
   sidebarOpen?: any;
@@ -39,7 +36,7 @@ const MobileSidebar = ({
   activeId,
   setActiveId,
   setParamId,
-}: childCompsProps) => {
+}: Props) => {
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -153,12 +150,7 @@ const MobileSidebar = ({
   );
 };
 
-const DesktopSidebar = ({
-  data,
-  activeId,
-  setActiveId,
-  setParamId,
-}: childCompsProps) => {
+const DesktopSidebar = ({ data, activeId, setActiveId, setParamId }: Props) => {
   return (
     <div className="hidden lg:flex lg:w-96 lg:flex-col lg:fixed lg:inset-y-0">
       {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -276,7 +268,6 @@ const SingleBooking: React.FC<{
 };
 
 export default function Admin() {
-  const router = useRouter();
   const utils = useUtils();
   const [paramId, setParamId] = useState("");
   const [activeId, setActiveId] = useState<number>();

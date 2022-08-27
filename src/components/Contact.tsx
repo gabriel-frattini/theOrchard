@@ -1,9 +1,7 @@
-import { MailIcon, PhoneIcon } from "@heroicons/react/outline";
 import { trpc } from "@/utils/trpc";
 import * as React from "react";
 import { useRouter } from "next/router";
 import Spinner from "./Spinner";
-import { CallToAction } from "./CallToAction";
 
 export function Contact() {
   const [loading, setLoading] = React.useState(false);
@@ -56,7 +54,7 @@ export function Contact() {
       <h2 className="font-display text-gray-600 text-lg mt-4">
         Interested in spending your next holiday in seychelles?
       </h2>
-      <h1 className="font-display text-3xl mt-2 mb-4 font-display tracking-tight ">
+      <h1 className="text-3xl mt-2 mb-4 font-display tracking-tight ">
         Get in touch.
       </h1>
       <form

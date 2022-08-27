@@ -15,7 +15,7 @@ export function middleware(req: NextRequest) {
     ) {
       return NextResponse.rewrite(new URL("/admin", req.url));
     }
-    return NextResponse.rewrite(new URL("/", req.url));
+    return NextResponse.next();
   }
 
   return NextResponse.next();

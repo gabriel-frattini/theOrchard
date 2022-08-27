@@ -189,7 +189,7 @@ export function EditImage(props: EditImageProps) {
   const [isSaving, setIsSaving] = React.useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [uploadedImage, setUploadedImage] = React.useState<any>();
-  const updateUserAvatarMutation = trpc.useMutation("admin.add-room", {
+  const addRoomMutation = trpc.useMutation("admin.add-room", {
     onSuccess: () => {
       window.location.reload();
       setIsSaving(false);
@@ -299,7 +299,7 @@ export function EditImage(props: EditImageProps) {
                 if (files && files.length > 0) {
                   uploadImageMutation.mutate(files[0], {
                     onSuccess: (uploadedImage) => {
-                      updateUserAvatarMutation.mutate({
+                      addRoomMutation.mutate({
                         image: uploadedImage.url,
                         id: props.roomId,
                       });

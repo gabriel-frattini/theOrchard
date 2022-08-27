@@ -19,7 +19,7 @@ interface messageProps {
 }
 
 interface Props {
-  data: messageProps[] | any;
+  data: messageProps[];
   setSidebarOpen?: any;
   sidebarOpen?: any;
   setActiveMsg?: any;
@@ -160,45 +160,51 @@ const DesktopSidebar = ({ data, activeId, setActiveId, setParamId }: Props) => {
           aria-label="Directory"
         >
           <ul role="list" className="relative z-10 divide-y divide-gray-200">
-            {data?.map((person: messageProps, idx: number) => (
-              <div className="cursor-pointer z-12">
-                <li
-                  key={idx}
-                  className={
-                    activeId === person.id
-                      ? "bg-gray-50 hover:bg-gray-50 cursor-pointer "
-                      : "bg-white cursor-pointer hover:bg-gray-50"
-                  }
-                  onClick={() => {
-                    setActiveId(person.id);
-                    const url = new URL(window.location.href);
+            {data
+              .sort(
+                (a: messageProps, b: messageProps) =>
+                  new Date(a.createdAt).getTime() -
+                  new Date(b.createdAt).getTime()
+              )
+              .map((person: messageProps, idx: number) => (
+                <div className="cursor-pointer z-12">
+                  <li
+                    key={idx}
+                    className={
+                      activeId === person.id
+                        ? "bg-gray-50 hover:bg-gray-50 cursor-pointer "
+                        : "bg-white cursor-pointer hover:bg-gray-50"
+                    }
+                    onClick={() => {
+                      setActiveId(person.id);
+                      const url = new URL(window.location.href);
 
-                    url.search = JSON.stringify(person.id);
-                    window.history.replaceState({}, "", url.toString());
-                    setParamId(JSON.stringify(person.id));
-                  }}
-                >
-                  <div className="relative px-6 py-5 flex items-center space-x-3">
-                    <div className="flex-1 min-w-0">
-                      <span className="flex justify-between">
-                        <p className="text-lg font-display text-gray-900">
-                          {person.name}
-                        </p>
+                      url.search = JSON.stringify(person.id);
+                      window.history.replaceState({}, "", url.toString());
+                      setParamId(JSON.stringify(person.id));
+                    }}
+                  >
+                    <div className="relative px-6 py-5 flex items-center space-x-3">
+                      <div className="flex-1 min-w-0">
+                        <span className="flex justify-between">
+                          <p className="text-lg font-display text-gray-900">
+                            {person.name}
+                          </p>
 
-                        <p className="text-gray-700 text-lg">
-                          {person.createdAt.toString().split("T")[0]}
+                          <p className="text-gray-700 text-lg">
+                            {person.createdAt.toString().split("T")[0]}
+                          </p>
+                        </span>
+                        <p className="text-lg text-gray-500">
+                          {person.message.length > 60
+                            ? `${person.message.slice(0, 60)}...`
+                            : person.message}
                         </p>
-                      </span>
-                      <p className="text-lg text-gray-500">
-                        {person.message.length > 60
-                          ? `${person.message.slice(0, 60)}...`
-                          : person.message}
-                      </p>
+                      </div>
                     </div>
-                  </div>
-                </li>
-              </div>
-            ))}
+                  </li>
+                </div>
+              ))}
           </ul>
         </nav>
         <div className="mt-5 flex-1 flex flex-col"></div>
@@ -354,7 +360,7 @@ export default function Admin() {
         <MobileSidebar
           setSidebarOpen={setSidebarOpen}
           sidebarOpen={sidebarOpen}
-          data={data ? data : []}
+          data={data as messageProps[]}
           activeId={activeId}
           setActiveId={setActiveId}
           setParamId={setParamId}
@@ -364,7 +370,7 @@ export default function Admin() {
           activeId={activeId}
           setActiveId={setActiveId}
           setParamId={setParamId}
-          data={data ? data : []}
+          data={data as messageProps[]}
         />
         <div className="lg:pl-64 flex flex-col flex-1">
           <main className="lg:ml-36  mt-36">

@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Tab } from "@headlessui/react";
 import { trpc } from "@/utils/trpc";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { uploadImage } from "@/utils/cloudinary";
 import { useMutation } from "react-query";
 import Image from "next/image";
@@ -16,6 +16,7 @@ interface ParentCompProps {
   handleEdit?: () => void;
   isEditing?: Boolean;
   room?: any;
+  router?: NextRouter;
 }
 
 export const Product: React.FC<ParentCompProps> = (props) => {
@@ -80,7 +81,11 @@ export const Product: React.FC<ParentCompProps> = (props) => {
         </Tab.Panels>
       </Tab.Group>
       {props.handleEdit ? (
-        <EditRoomDetails handleEdit={props.handleEdit} room={props.room.room} />
+        <EditRoomDetails
+          handleEdit={props.handleEdit}
+          room={props.room.room}
+          router={router}
+        />
       ) : (
         <div>
           <RoomDetails room={data?.room} />
@@ -140,14 +145,13 @@ const EditRoomDetails = (props: ParentCompProps) => {
 
   return (
     <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0 relative">
-      <form onSubmit={handleSaveNewRoomDetails} className="">
-        <button
-          type="submit"
-          className="sm:absolute sm:w-[200px] w-full right-0 top-0 inline-flex justify-center py-2  border border-transparent shadow-sm font-bold text-lg rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
-        >
-          {isSaving ? <Spinner /> : "Save"}
-        </button>
-      </form>
+      <button
+        type="submit"
+        className="sm:absolute sm:w-[200px] w-full right-0 top-0 inline-flex justify-center py-2  border border-transparent shadow-sm font-bold text-lg rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
+        onClick={handleSaveNewRoomDetails}
+      >
+        {isSaving ? <Spinner /> : "Save"}
+      </button>
       <input
         value={roomName}
         onChange={(e) => setRoomName(e.target.value)}

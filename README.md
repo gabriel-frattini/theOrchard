@@ -28,7 +28,7 @@
 ### Clone the repo
 
 ```bash
-git clone https://github.com/gabriel-frattini/sideclub
+git clone https://github.com/gabriel-frattini/theOrchard
 ```
 
 ### Install dependencies

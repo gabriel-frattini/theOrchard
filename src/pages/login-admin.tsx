@@ -31,7 +31,7 @@ const Admin: React.FC<Props> = () => {
             Sign in to your account
           </h2>
           <p className="mt-2 text-sm text-gray-700">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Hello admin, please sign in to your account to continue.
           </p>
         </div>
         <div className="mt-10">

@@ -265,7 +265,7 @@ const SingleBooking: React.FC<{
         >
           Message
         </label>
-        <div className="shadow-sm block w-full h-48 p-4 sm:text-sm border-gray-200 border-2 rounded-lg">
+        <div className="shadow-sm block w-full min-h-48 h-fit p-4 sm:text-sm border-gray-200 border-2 rounded-lg">
           <p className="text-lg">{data!.message}</p>
         </div>
       </div>
